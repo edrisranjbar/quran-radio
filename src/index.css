@@ -64,4 +64,34 @@
   .player-progress-bar {
     @apply h-full bg-islamic transition-all duration-100;
   }
+  
+  /* Animation for audio visualization */
+  @keyframes pulse-opacity {
+    0% { opacity: 0.4; }
+    50% { opacity: 1; }
+    100% { opacity: 0.4; }
+  }
+  
+  .animate-pulse-opacity {
+    animation: pulse-opacity 1.5s infinite;
+  }
+  
+  /* Animation for reciter selection */
+  .reciter-enter {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  .reciter-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 300ms, transform 300ms;
+  }
+  .reciter-exit {
+    opacity: 1;
+  }
+  .reciter-exit-active {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 300ms, transform 300ms;
+  }
 }

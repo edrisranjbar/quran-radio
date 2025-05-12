@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 
 export interface RadioStation {
@@ -7,6 +6,7 @@ export interface RadioStation {
   reciter: string;
   url: string;
   language: string;
+  reciterImage?: string; // Added reciter image URL
 }
 
 const useAudio = () => {
@@ -16,35 +16,40 @@ const useAudio = () => {
       name: "Quran Makkah",
       reciter: "Sheikh Maher Al Muaiqly",
       url: "https://stream.radiojar.com/0tpy1h0kxtzuv",
-      language: "Arabic"
+      language: "Arabic",
+      reciterImage: "https://images.unsplash.com/photo-1618677661551-d170e1221a9f?q=80&w=200&auto=format&fit=crop"
     },
     {
       id: 2,
       name: "Quran Madinah",
       reciter: "Sheikh Abdul Muhsin Al Qasim",
       url: "https://n12.radiojar.com/2uh8ygneetzuv?rj-ttl=5&rj-tok=AAABi14hLYUA_d69Fi-mcn5n1w",
-      language: "Arabic"
+      language: "Arabic",
+      reciterImage: "https://images.unsplash.com/photo-1618677661433-2a59e0862dc1?q=80&w=200&auto=format&fit=crop"
     },
     {
       id: 3,
       name: "Holy Quran Radio",
       reciter: "Various Reciters",
       url: "https://stream.radiojar.com/0tpy1h0kxtzuv",
-      language: "Arabic"
+      language: "Arabic",
+      reciterImage: "https://images.unsplash.com/photo-1618677661084-3ec046498f8b?q=80&w=200&auto=format&fit=crop"
     },
     {
       id: 4,
       name: "Quran Recitation",
       reciter: "Sheikh Mishary Rashid Al-Afasy",
       url: "https://stream.radiojar.com/0tpy1h0kxtzuv",
-      language: "Arabic"
+      language: "Arabic",
+      reciterImage: "https://images.unsplash.com/photo-1618677661085-b5f03d3ae8b5?q=80&w=200&auto=format&fit=crop"
     },
     {
       id: 5,
       name: "Radio Quran Kareem",
       reciter: "Various Reciters",
       url: "https://stream.radiojar.com/0tpy1h0kxtzuv",
-      language: "Arabic"
+      language: "Arabic",
+      reciterImage: "https://images.unsplash.com/photo-1618677661091-e2d00d3c7769?q=80&w=200&auto=format&fit=crop"
     }
   ]);
 

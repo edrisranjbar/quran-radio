@@ -2,6 +2,7 @@
 import React from 'react';
 import AudioControls from './AudioControls';
 import StationsList from './StationsList';
+import ReciterSelector from './ReciterSelector';
 import useAudio from '../hooks/useAudio';
 
 const RadioPlayer: React.FC = () => {
@@ -22,11 +23,27 @@ const RadioPlayer: React.FC = () => {
         <div className="text-center mb-4">
           {currentStation ? (
             <>
+              <div className="flex items-center justify-center mb-2">
+                <ReciterSelector 
+                  stations={stations}
+                  currentStation={currentStation}
+                  onSelectStation={playStation}
+                />
+              </div>
               <h2 className="text-xl font-medium text-islamic">{currentStation.name}</h2>
               <p className="text-muted-foreground">{currentStation.reciter}</p>
             </>
           ) : (
-            <h2 className="text-xl font-medium text-islamic">Select a station to begin</h2>
+            <>
+              <div className="flex items-center justify-center mb-2">
+                <ReciterSelector 
+                  stations={stations}
+                  currentStation={currentStation}
+                  onSelectStation={playStation}
+                />
+              </div>
+              <h2 className="text-xl font-medium text-islamic">Select a station to begin</h2>
+            </>
           )}
         </div>
         
