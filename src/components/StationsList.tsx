@@ -31,7 +31,7 @@ const StationsList: React.FC<StationsListProps> = ({
               <div className="mr-4 h-12 w-12 flex items-center justify-center rounded-full overflow-hidden">
                 {station.image ? (
                   <Avatar className="h-full w-full">
-                    <AvatarImage src={station.image} alt={station.reciter} />
+                    <AvatarImage src={station.image} alt={station.name} />
                     <AvatarFallback className="bg-islamic/10 text-islamic">
                       <Radio size={20} />
                     </AvatarFallback>
@@ -44,7 +44,7 @@ const StationsList: React.FC<StationsListProps> = ({
               </div>
               <div className="flex-1">
                 <h3 className="font-medium text-lg text-foreground">{station.name}</h3>
-                <p className="text-sm text-muted-foreground">{station.reciter}</p>
+                <p className="text-sm text-muted-foreground">{station.name}</p>
               </div>
               {isActive && isPlaying && (
                 <div className="flex items-center space-x-1">

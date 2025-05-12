@@ -1,5 +1,6 @@
 
 import { useState, useEffect, useRef } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 export interface QuranReciter {
   id: number;
@@ -14,49 +15,72 @@ export interface QuranSurah {
   url: string;
 }
 
+interface TVQuranReciter {
+  id: string;
+  name: string;
+  relative_path: string;
+  server: string;
+  suras: string;
+  count: string;
+  description: string;
+  letter: string;
+  bio: string;
+  style: string;
+}
+
+interface TVQuranSurahName {
+  id: string;
+  name: string;
+}
+
+const fetchReciters = async (): Promise<QuranReciter[]> => {
+  try {
+    // Fetch reciters list from TVQuran API
+    const recitersResponse = await fetch('https://api.quran.com/api/v4/resources/recitations');
+    const recitersData = await recitersResponse.json();
+    
+    // Fetch surah names
+    const surahsResponse = await fetch('https://api.quran.com/api/v4/chapters?language=en');
+    const surahsData = await surahsResponse.json();
+    const surahNames: TVQuranSurahName[] = surahsData.chapters;
+
+    // Process and format the data
+    const processedReciters: QuranReciter[] = recitersData.recitations
+      .slice(0, 10) // Limit to 10 reciters to avoid overwhelming the UI
+      .map((reciter: any, index: number) => {
+        // Generate surahs for each reciter
+        const surahs: QuranSurah[] = surahNames
+          .slice(0, 10) // Limit to first 10 surahs for simplicity
+          .map((surah: any) => {
+            // Format surah number with leading zeros
+            const surahId = surah.id.toString().padStart(3, '0');
+            return {
+              id: parseInt(surah.id),
+              name: surah.name_simple,
+              url: `https://verses.quran.com/${reciter.id}/${surahId}.mp3`
+            };
+          });
+
+        return {
+          id: parseInt(reciter.id),
+          name: reciter.reciter_name_eng || reciter.reciter_name,
+          image: `https://quran.com/images/${reciter.id}.jpg`,  // Use generic image path
+          surahs: surahs
+        };
+      });
+
+    return processedReciters;
+  } catch (error) {
+    console.error("Error fetching TVQuran reciters:", error);
+    return []; // Return empty array on error
+  }
+};
+
 const useAudio = () => {
-  const [reciters, setReciters] = useState<QuranReciter[]>([
-    {
-      id: 1,
-      name: "Sheikh Maher Al Muaiqly",
-      image: "https://images.unsplash.com/photo-1618677661551-d170e1221a9f?q=80&w=200&auto=format&fit=crop",
-      surahs: [
-        { id: 1, name: "Al-Fatihah (The Opening)", url: "https://server8.mp3quran.net/afs/001.mp3" },
-        { id: 2, name: "Al-Baqarah (The Cow)", url: "https://server8.mp3quran.net/afs/002.mp3" },
-        { id: 3, name: "Al-Imran (The Family of Imran)", url: "https://server8.mp3quran.net/afs/003.mp3" },
-      ]
-    },
-    {
-      id: 2,
-      name: "Sheikh Abdul Muhsin Al Qasim",
-      image: "https://images.unsplash.com/photo-1618677661433-2a59e0862dc1?q=80&w=200&auto=format&fit=crop",
-      surahs: [
-        { id: 1, name: "Al-Fatihah (The Opening)", url: "https://server9.mp3quran.net/qasm/001.mp3" },
-        { id: 2, name: "Al-Baqarah (The Cow)", url: "https://server9.mp3quran.net/qasm/002.mp3" },
-        { id: 3, name: "Al-Imran (The Family of Imran)", url: "https://server9.mp3quran.net/qasm/003.mp3" },
-      ]
-    },
-    {
-      id: 3,
-      name: "Sheikh Mishary Rashid Al-Afasy",
-      image: "https://images.unsplash.com/photo-1618677661085-b5f03d3ae8b5?q=80&w=200&auto=format&fit=crop",
-      surahs: [
-        { id: 1, name: "Al-Fatihah (The Opening)", url: "https://server8.mp3quran.net/afs/001.mp3" },
-        { id: 2, name: "Al-Baqarah (The Cow)", url: "https://server8.mp3quran.net/afs/002.mp3" },
-        { id: 3, name: "Al-Imran (The Family of Imran)", url: "https://server8.mp3quran.net/afs/003.mp3" },
-      ]
-    },
-    {
-      id: 4,
-      name: "Sheikh Abdur-Rahman As-Sudais",
-      image: "https://images.unsplash.com/photo-1618677661091-e2d00d3c7769?q=80&w=200&auto=format&fit=crop",
-      surahs: [
-        { id: 1, name: "Al-Fatihah (The Opening)", url: "https://server11.mp3quran.net/sds/001.mp3" },
-        { id: 2, name: "Al-Baqarah (The Cow)", url: "https://server11.mp3quran.net/sds/002.mp3" },
-        { id: 3, name: "Al-Imran (The Family of Imran)", url: "https://server11.mp3quran.net/sds/003.mp3" },
-      ]
-    }
-  ]);
+  const { data: reciters = [], isLoading } = useQuery({
+    queryKey: ['reciters'],
+    queryFn: fetchReciters,
+  });
   
   const [currentReciter, setCurrentReciter] = useState<QuranReciter | null>(null);
   const [queue, setQueue] = useState<QuranSurah[]>([]);
@@ -221,7 +245,8 @@ const useAudio = () => {
     changeVolume,
     playSurah,
     playNextSurah,
-    playPreviousSurah
+    playPreviousSurah,
+    isLoading,
   };
 };
 
