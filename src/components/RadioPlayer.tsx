@@ -32,40 +32,39 @@ const RadioPlayer: React.FC = () => {
           <p className="mt-4 text-islamic">Loading Quran Reciters...</p>
         </div>
       ) : (
-        <>
-          <div className="mb-8 islamic-card bg-white">
-            <div className="text-center mb-4">
-              <div className="flex items-center justify-center mb-2">
-                <ReciterSelector 
-                  reciters={reciters}
-                  currentReciter={currentReciter}
-                  onSelectReciter={selectReciter}
-                />
+        <div className="grid grid-cols-1 gap-8">
+          {/* Reciters Section */}
+          <section className="islamic-card bg-white">
+            <ReciterSelector 
+              reciters={reciters}
+              currentReciter={currentReciter}
+              onSelectReciter={selectReciter}
+            />
+          </section>
+          
+          {/* Player Section - Only show when reciter is selected */}
+          {currentReciter && (
+            <section className="islamic-card bg-white">
+              <div className="text-center mb-4">
+                <h2 className="text-xl font-medium text-islamic">{currentReciter.name}</h2>
+                {currentSurah && (
+                  <p className="text-muted-foreground">{currentSurah.name}</p>
+                )}
               </div>
               
-              {currentReciter ? (
-                <>
-                  <h2 className="text-xl font-medium text-islamic">{currentReciter.name}</h2>
-                  {currentSurah && (
-                    <p className="text-muted-foreground">{currentSurah.name}</p>
-                  )}
-                </>
-              ) : (
-                <h2 className="text-xl font-medium text-islamic">Select a reciter to begin</h2>
-              )}
-            </div>
-            
-            <AudioControls
-              isPlaying={isPlaying}
-              loading={loading}
-              volume={volume}
-              onPlayPause={togglePlay}
-              onVolumeChange={changeVolume}
-              onSkipNext={playNextSurah}
-              onSkipPrevious={playPreviousSurah}
-            />
-          </div>
+              <AudioControls
+                isPlaying={isPlaying}
+                loading={loading}
+                volume={volume}
+                onPlayPause={togglePlay}
+                onVolumeChange={changeVolume}
+                onSkipNext={playNextSurah}
+                onSkipPrevious={playPreviousSurah}
+              />
+            </section>
+          )}
           
+          {/* Queue Section - Only show when reciter is selected */}
           {currentReciter && (
             <SurahQueue
               surahs={queue}
@@ -74,7 +73,7 @@ const RadioPlayer: React.FC = () => {
               isPlaying={isPlaying}
             />
           )}
-        </>
+        </div>
       )}
     </div>
   );
