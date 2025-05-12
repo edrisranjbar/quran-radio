@@ -1,13 +1,13 @@
 
 import React from 'react';
-import type { RadioStation } from '../hooks/useAudio';
+import type { QuranReciter } from '../hooks/useAudio';
 import { Radio } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface StationsListProps {
-  stations: RadioStation[];
-  currentStation: RadioStation | null;
-  onSelectStation: (station: RadioStation) => void;
+  stations: QuranReciter[];
+  currentStation: QuranReciter | null;
+  onSelectStation: (station: QuranReciter) => void;
   isPlaying: boolean;
 }
 
@@ -29,9 +29,9 @@ const StationsList: React.FC<StationsListProps> = ({
           >
             <div className="flex items-center">
               <div className="mr-4 h-12 w-12 flex items-center justify-center rounded-full overflow-hidden">
-                {station.reciterImage ? (
+                {station.image ? (
                   <Avatar className="h-full w-full">
-                    <AvatarImage src={station.reciterImage} alt={station.reciter} />
+                    <AvatarImage src={station.image} alt={station.reciter} />
                     <AvatarFallback className="bg-islamic/10 text-islamic">
                       <Radio size={20} />
                     </AvatarFallback>
