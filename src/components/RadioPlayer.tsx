@@ -1,49 +1,48 @@
 
 import React from 'react';
 import AudioControls from './AudioControls';
-import StationsList from './StationsList';
 import ReciterSelector from './ReciterSelector';
+import SurahQueue from './SurahQueue';
 import useAudio from '../hooks/useAudio';
 
 const RadioPlayer: React.FC = () => {
   const {
-    stations,
-    currentStation,
+    reciters,
+    currentReciter,
+    queue,
+    currentSurah,
     isPlaying,
     volume,
     loading,
-    playStation,
+    selectReciter,
     togglePlay,
     changeVolume,
+    playSurah,
+    playNextSurah,
+    playPreviousSurah
   } = useAudio();
 
   return (
     <div className="container mx-auto px-4">
       <div className="mb-8 islamic-card bg-white">
         <div className="text-center mb-4">
-          {currentStation ? (
+          <div className="flex items-center justify-center mb-2">
+            <ReciterSelector 
+              reciters={reciters}
+              currentReciter={currentReciter}
+              onSelectReciter={selectReciter}
+            />
+          </div>
+          
+          {currentReciter ? (
             <>
-              <div className="flex items-center justify-center mb-2">
-                <ReciterSelector 
-                  stations={stations}
-                  currentStation={currentStation}
-                  onSelectStation={playStation}
-                />
-              </div>
-              <h2 className="text-xl font-medium text-islamic">{currentStation.name}</h2>
-              <p className="text-muted-foreground">{currentStation.reciter}</p>
+              <h2 className="text-xl font-medium text-islamic">{currentReciter.name}</h2>
+              {currentSurah && (
+                <p className="text-muted-foreground">{currentSurah.name}</p>
+              )}
             </>
           ) : (
-            <>
-              <div className="flex items-center justify-center mb-2">
-                <ReciterSelector 
-                  stations={stations}
-                  currentStation={currentStation}
-                  onSelectStation={playStation}
-                />
-              </div>
-              <h2 className="text-xl font-medium text-islamic">Select a station to begin</h2>
-            </>
+            <h2 className="text-xl font-medium text-islamic">Select a reciter to begin</h2>
           )}
         </div>
         
@@ -53,22 +52,19 @@ const RadioPlayer: React.FC = () => {
           volume={volume}
           onPlayPause={togglePlay}
           onVolumeChange={changeVolume}
+          onSkipNext={playNextSurah}
+          onSkipPrevious={playPreviousSurah}
         />
       </div>
       
-      <h2 className="text-2xl font-semibold mb-4 text-islamic">Quran Stations</h2>
-      
-      <StationsList
-        stations={stations}
-        currentStation={currentStation}
-        onSelectStation={(station) => {
-          if (!isPlaying || currentStation?.id !== station.id) {
-            playStation(station);
-            if (!isPlaying) togglePlay();
-          }
-        }}
-        isPlaying={isPlaying}
-      />
+      {currentReciter && (
+        <SurahQueue
+          surahs={queue}
+          currentSurah={currentSurah}
+          onSelectSurah={playSurah}
+          isPlaying={isPlaying}
+        />
+      )}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, SkipBack, SkipForward } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
 
 interface AudioControlsProps {
@@ -9,6 +9,8 @@ interface AudioControlsProps {
   volume: number;
   onPlayPause: () => void;
   onVolumeChange: (value: number) => void;
+  onSkipNext: () => void;
+  onSkipPrevious: () => void;
 }
 
 const AudioControls: React.FC<AudioControlsProps> = ({
@@ -16,29 +18,47 @@ const AudioControls: React.FC<AudioControlsProps> = ({
   loading,
   volume,
   onPlayPause,
-  onVolumeChange
+  onVolumeChange,
+  onSkipNext,
+  onSkipPrevious
 }) => {
   const handleVolumeChange = (values: number[]) => {
     onVolumeChange(values[0]);
   };
 
   return (
-    <div className="flex items-center justify-center space-x-4 w-full max-w-xs mx-auto">
-      <button
-        onClick={onPlayPause}
-        className="flex items-center justify-center h-12 w-12 rounded-full bg-islamic text-white shadow-lg hover:bg-islamic-dark transition-colors"
-        disabled={loading}
-      >
-        {loading ? (
-          <div className="h-5 w-5 rounded-full border-2 border-white border-t-transparent animate-spin" />
-        ) : isPlaying ? (
-          <Pause size={20} />
-        ) : (
-          <Play size={20} />
-        )}
-      </button>
+    <div className="flex flex-col items-center w-full max-w-sm mx-auto">
+      <div className="flex items-center justify-center space-x-6 w-full mb-4">
+        <button
+          onClick={onSkipPrevious}
+          className="flex items-center justify-center h-10 w-10 rounded-full bg-muted text-islamic hover:bg-muted/80 transition-colors"
+        >
+          <SkipBack size={18} />
+        </button>
+        
+        <button
+          onClick={onPlayPause}
+          className="flex items-center justify-center h-12 w-12 rounded-full bg-islamic text-white shadow-lg hover:bg-islamic-dark transition-colors"
+          disabled={loading}
+        >
+          {loading ? (
+            <div className="h-5 w-5 rounded-full border-2 border-white border-t-transparent animate-spin" />
+          ) : isPlaying ? (
+            <Pause size={20} />
+          ) : (
+            <Play size={20} />
+          )}
+        </button>
+        
+        <button
+          onClick={onSkipNext}
+          className="flex items-center justify-center h-10 w-10 rounded-full bg-muted text-islamic hover:bg-muted/80 transition-colors"
+        >
+          <SkipForward size={18} />
+        </button>
+      </div>
 
-      <div className="flex items-center space-x-3 flex-1">
+      <div className="flex items-center space-x-3 w-full">
         <button
           className="text-islamic hover:text-islamic-dark transition-colors"
           onClick={() => onVolumeChange(volume > 0 ? 0 : 0.7)}
