@@ -31,17 +31,6 @@ const RadioPlayer: React.FC = () => {
           {/* Player Section */}
           <section className="islamic-card">
             <div className="text-center mb-6">
-              <div className="flex justify-center mb-4">
-                {reciter?.image && (
-                  <div className="h-24 w-24 rounded-full overflow-hidden border-2 border-primary">
-                    <img 
-                      src={reciter.image} 
-                      alt={reciter.name} 
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                )}
-              </div>
               <h2 className="text-2xl font-medium text-primary">{reciter?.name || "Islam Sobhi"}</h2>
               <p className="text-muted-foreground">
                 {currentRecitation ? `Playing: ${currentRecitation.name}` : 'Quran Recitation'}
