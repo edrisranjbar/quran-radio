@@ -67,7 +67,9 @@ export default {
 					DEFAULT: '#1D4C82', // Deep blue
 					secondary: '#B39862', // Gold accent
 					light: '#F8F6EF', // Light background
-					dark: '#102442' // Deep accent
+					dark: '#102442', // Deep accent
+					'dark-mode': '#213347', // Dark mode background
+					'dark-accent': '#304C75', // Dark mode accent
 				},
 			},
 			borderRadius: {
@@ -103,7 +105,8 @@ export default {
 				'pulse-opacity': 'pulse-opacity 2s infinite ease-in-out'
 			},
 			backgroundImage: {
-				'islamic-pattern': "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0V30 60M0 30H60' stroke='%231D4C8210' stroke-width='1'/%3E%3C/svg%3E\")"
+				'islamic-pattern': "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0V30 60M0 30H60' stroke='%231D4C8210' stroke-width='1'/%3E%3C/svg%3E\")",
+				'islamic-pattern-dark': "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0V30 60M0 30H60' stroke='%23FFFFFF10' stroke-width='1'/%3E%3C/svg%3E\")"
 			}
 		}
 	},

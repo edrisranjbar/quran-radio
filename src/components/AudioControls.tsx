@@ -31,28 +31,28 @@ const AudioControls: React.FC<AudioControlsProps> = ({
       <div className="flex items-center justify-center space-x-6 w-full mb-4">
         <button
           onClick={onSkipPrevious}
-          className="flex items-center justify-center h-10 w-10 rounded-full bg-muted text-islamic hover:bg-muted/80 transition-colors"
+          className="flex items-center justify-center h-10 w-10 rounded-full bg-accent text-primary hover:bg-accent/80 transition-colors"
         >
           <SkipBack size={18} />
         </button>
         
         <button
           onClick={onPlayPause}
-          className="flex items-center justify-center h-12 w-12 rounded-full bg-islamic text-white shadow-lg hover:bg-islamic-dark transition-colors"
+          className="flex items-center justify-center h-12 w-12 rounded-full bg-primary text-primary-foreground shadow-md hover:bg-primary/90 transition-colors"
           disabled={loading}
         >
           {loading ? (
-            <div className="h-5 w-5 rounded-full border-2 border-white border-t-transparent animate-spin" />
+            <div className="h-5 w-5 rounded-full border-2 border-primary-foreground border-t-transparent animate-spin" />
           ) : isPlaying ? (
             <Pause size={20} />
           ) : (
-            <Play size={20} />
+            <Play size={20} className="ml-1" />
           )}
         </button>
         
         <button
           onClick={onSkipNext}
-          className="flex items-center justify-center h-10 w-10 rounded-full bg-muted text-islamic hover:bg-muted/80 transition-colors"
+          className="flex items-center justify-center h-10 w-10 rounded-full bg-accent text-primary hover:bg-accent/80 transition-colors"
         >
           <SkipForward size={18} />
         </button>
@@ -60,7 +60,7 @@ const AudioControls: React.FC<AudioControlsProps> = ({
 
       <div className="flex items-center space-x-3 w-full">
         <button
-          className="text-islamic hover:text-islamic-dark transition-colors"
+          className="text-primary hover:text-primary/80 transition-colors"
           onClick={() => onVolumeChange(volume > 0 ? 0 : 0.7)}
         >
           {volume === 0 ? (

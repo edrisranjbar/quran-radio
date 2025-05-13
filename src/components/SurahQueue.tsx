@@ -17,30 +17,30 @@ const SurahQueue: React.FC<SurahQueueProps> = ({
   isPlaying
 }) => {
   return (
-    <div className="w-full">
+    <div className="w-full islamic-card">
       <div className="flex items-center mb-3">
-        <ListMusic size={20} className="mr-2 text-islamic" />
-        <h2 className="text-xl font-semibold text-islamic">Quran Surahs</h2>
+        <ListMusic size={18} className="mr-2 text-primary" />
+        <h2 className="text-xl font-medium text-primary">Quran Surahs</h2>
       </div>
       
-      <div className="grid gap-2">
+      <div className="grid gap-2 max-h-[50vh] overflow-y-auto pr-1">
         {surahs.map((surah) => (
           <div
             key={surah.id}
-            className={`flex items-center p-3 border rounded-lg cursor-pointer hover:bg-accent/40 ${
-              currentSurah?.id === surah.id ? 'bg-accent/70 border-islamic/30' : 'border-transparent'
+            className={`flex items-center p-2.5 border rounded-lg cursor-pointer hover:bg-accent/20 ${
+              currentSurah?.id === surah.id ? 'bg-accent/30 border-primary/30' : 'border-transparent'
             }`}
             onClick={() => onSelectSurah(surah)}
           >
             <div className="mr-3 flex-shrink-0">
-              <div className={`flex items-center justify-center h-8 w-8 rounded-full bg-islamic/10 text-islamic ${
+              <div className={`flex items-center justify-center h-7 w-7 rounded-full bg-accent text-primary ${
                 currentSurah?.id === surah.id && isPlaying ? 'animate-pulse-opacity' : ''
               }`}>
                 <span className="text-xs font-medium">{surah.id}</span>
               </div>
             </div>
             <div className="overflow-hidden">
-              <h3 className="font-medium truncate">{surah.name}</h3>
+              <h3 className="font-medium truncate text-sm">{surah.name}</h3>
             </div>
           </div>
         ))}

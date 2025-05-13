@@ -4,7 +4,9 @@ import AudioControls from './AudioControls';
 import ReciterSelector from './ReciterSelector';
 import SurahQueue from './SurahQueue';
 import useAudio from '../hooks/useAudio';
-import { Loader2 } from 'lucide-react';
+import { Loader2, MoonIcon, SunIcon } from 'lucide-react';
+import { Button } from './ui/button';
+import { useTheme } from 'next-themes';
 
 const RadioPlayer: React.FC = () => {
   const {
@@ -24,17 +26,34 @@ const RadioPlayer: React.FC = () => {
     isLoading
   } = useAudio();
 
+  const { theme, setTheme } = useTheme();
+
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
+
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto px-4 max-w-3xl">
+      <div className="flex justify-end mb-2">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={toggleTheme}
+          className="rounded-full"
+        >
+          {theme === 'dark' ? <SunIcon size={18} /> : <MoonIcon size={18} />}
+        </Button>
+      </div>
+      
       {isLoading ? (
         <div className="islamic-card flex flex-col items-center justify-center p-10">
-          <Loader2 className="h-10 w-10 animate-spin text-islamic" />
-          <p className="mt-4 text-islamic">Loading Quran Reciters...</p>
+          <Loader2 className="h-10 w-10 animate-spin text-primary" />
+          <p className="mt-4 text-foreground">Loading Quran Reciters...</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-8">
+        <div className="space-y-6">
           {/* Reciters Section */}
-          <section className="islamic-card bg-white">
+          <section className="islamic-card">
             <ReciterSelector 
               reciters={reciters}
               currentReciter={currentReciter}
@@ -44,9 +63,9 @@ const RadioPlayer: React.FC = () => {
           
           {/* Player Section - Only show when reciter is selected */}
           {currentReciter && (
-            <section className="islamic-card bg-white">
+            <section className="islamic-card">
               <div className="text-center mb-4">
-                <h2 className="text-xl font-medium text-islamic">{currentReciter.name}</h2>
+                <h2 className="text-xl font-medium text-primary">{currentReciter.name}</h2>
                 {currentSurah && (
                   <p className="text-muted-foreground">{currentSurah.name}</p>
                 )}
