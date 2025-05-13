@@ -1,6 +1,7 @@
 
 import React from 'react';
 import AudioControls from './AudioControls';
+import RecitationsList from './RecitationsList';
 import useAudio from '../hooks/useAudio';
 import { Loader2 } from 'lucide-react';
 
@@ -12,7 +13,10 @@ const RadioPlayer: React.FC = () => {
     loading,
     togglePlay,
     changeVolume,
-    isLoading
+    isLoading,
+    recitations,
+    currentRecitation,
+    changeRecitation
   } = useAudio();
 
   return (
@@ -39,7 +43,9 @@ const RadioPlayer: React.FC = () => {
                 )}
               </div>
               <h2 className="text-2xl font-medium text-primary">{reciter?.name || "Islam Sobhi"}</h2>
-              <p className="text-muted-foreground">Quran Recitation</p>
+              <p className="text-muted-foreground">
+                {currentRecitation ? `Playing: ${currentRecitation.name}` : 'Quran Recitation'}
+              </p>
             </div>
             
             <AudioControls
@@ -50,6 +56,13 @@ const RadioPlayer: React.FC = () => {
               onVolumeChange={changeVolume}
             />
           </section>
+          
+          {/* Recitations List */}
+          <RecitationsList 
+            recitations={recitations}
+            currentRecitation={currentRecitation}
+            onSelectRecitation={changeRecitation}
+          />
         </div>
       )}
     </div>
