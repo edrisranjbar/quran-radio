@@ -55,7 +55,7 @@ const ReciterSelector: React.FC<ReciterSelectorProps> = ({ reciters, currentReci
             <div>
               <h3 className="font-medium">{reciter.name}</h3>
               <Badge variant="secondary" className="mt-1 text-xs">
-                {reciter.surahs.length} surahs
+                Quran Reciter
               </Badge>
             </div>
           </div>
