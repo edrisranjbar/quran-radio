@@ -1,15 +1,12 @@
 
 import React from 'react';
 import AudioControls from './AudioControls';
-import ReciterSelector from './ReciterSelector';
 import useAudio from '../hooks/useAudio';
 import { Loader2, SkipBack, SkipForward } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const RadioPlayer: React.FC = () => {
   const {
-    reciter,
-    reciters,
     isPlaying,
     volume,
     loading,
@@ -17,8 +14,6 @@ const RadioPlayer: React.FC = () => {
     changeVolume,
     isLoading,
     currentRecitation,
-    changeReciter,
-    selectRandomReciter,
     nextRecitation,
     previousRecitation
   } = useAudio();
@@ -28,14 +23,14 @@ const RadioPlayer: React.FC = () => {
       {isLoading ? (
         <div className="islamic-card flex flex-col items-center justify-center p-10">
           <Loader2 className="h-10 w-10 animate-spin text-primary" />
-          <p className="mt-4 text-foreground">Loading Quran Reciters...</p>
+          <p className="mt-4 text-foreground">Loading Quran Recitations...</p>
         </div>
       ) : (
         <div className="space-y-6">
           {/* Player Section */}
           <section className="islamic-card">
             <div className="text-center mb-6">
-              <h2 className="text-2xl font-medium text-primary">{reciter?.name || "Select a Reciter"}</h2>
+              <h2 className="text-2xl font-medium text-primary">Quran Player</h2>
               <p className="text-muted-foreground">
                 {currentRecitation ? `Playing: ${currentRecitation.name}` : 'Select a recitation'}
               </p>
@@ -72,17 +67,6 @@ const RadioPlayer: React.FC = () => {
               </Button>
             </div>
           </section>
-          
-          {/* Reciters Selector */}
-          <div className="islamic-card p-4">
-            <h3 className="text-lg font-medium mb-4">Change Reciter</h3>
-            <ReciterSelector 
-              reciters={reciters}
-              currentReciter={reciter}
-              onSelectReciter={changeReciter}
-              onRandomReciter={selectRandomReciter}
-            />
-          </div>
         </div>
       )}
     </div>
