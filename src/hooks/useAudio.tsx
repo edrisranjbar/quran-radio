@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
@@ -182,6 +181,31 @@ const useAudio = () => {
     }
   };
 
+  // New functions for next and previous recitation
+  const nextRecitation = () => {
+    if (!currentReciterId || !currentRecitation) return;
+    
+    const currentIndex = recitations.findIndex(r => r.id === currentRecitation.id);
+    if (currentIndex < recitations.length - 1) {
+      changeRecitation(recitations[currentIndex + 1]);
+    } else {
+      // Wrap around to the first recitation
+      changeRecitation(recitations[0]);
+    }
+  };
+
+  const previousRecitation = () => {
+    if (!currentReciterId || !currentRecitation) return;
+    
+    const currentIndex = recitations.findIndex(r => r.id === currentRecitation.id);
+    if (currentIndex > 0) {
+      changeRecitation(recitations[currentIndex - 1]);
+    } else {
+      // Wrap around to the last recitation
+      changeRecitation(recitations[recitations.length - 1]);
+    }
+  };
+
   // Toggle play/pause
   const togglePlay = () => {
     if (audioRef.current) {
@@ -237,7 +261,9 @@ const useAudio = () => {
     currentRecitation,
     changeRecitation,
     changeReciter,
-    selectRandomReciter
+    selectRandomReciter,
+    nextRecitation,
+    previousRecitation
   };
 };
 

@@ -1,11 +1,11 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import AudioControls from './AudioControls';
-import RecitationsList from './RecitationsList';
 import ReciterSelector from './ReciterSelector';
 import useAudio from '../hooks/useAudio';
-import { Loader2 } from 'lucide-react';
+import { Loader2, SkipBack, SkipForward } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
 
 const RadioPlayer: React.FC = () => {
   const {
@@ -17,14 +17,12 @@ const RadioPlayer: React.FC = () => {
     togglePlay,
     changeVolume,
     isLoading,
-    recitations,
     currentRecitation,
-    changeRecitation,
     changeReciter,
-    selectRandomReciter
+    selectRandomReciter,
+    nextRecitation,
+    previousRecitation
   } = useAudio();
-
-  const [activeTab, setActiveTab] = useState<string>("recitations");
 
   return (
     <div className="container mx-auto px-4 max-w-3xl">
@@ -51,33 +49,40 @@ const RadioPlayer: React.FC = () => {
               onPlayPause={togglePlay}
               onVolumeChange={changeVolume}
             />
+            
+            {/* Navigation Buttons */}
+            <div className="flex justify-center mt-6 space-x-4">
+              <Button 
+                variant="outline" 
+                size="icon" 
+                onClick={previousRecitation}
+                disabled={loading}
+              >
+                <SkipBack size={20} />
+                <span className="sr-only">Previous Recitation</span>
+              </Button>
+              
+              <Button 
+                variant="outline" 
+                size="icon" 
+                onClick={nextRecitation}
+                disabled={loading}
+              >
+                <SkipForward size={20} />
+                <span className="sr-only">Next Recitation</span>
+              </Button>
+            </div>
           </section>
           
-          {/* Tabs for Recitations and Reciters */}
+          {/* Reciters Selector */}
           <div className="islamic-card p-4">
-            <Tabs defaultValue="recitations" value={activeTab} onValueChange={setActiveTab}>
-              <TabsList className="grid grid-cols-2 w-full mb-4">
-                <TabsTrigger value="recitations">Recitations</TabsTrigger>
-                <TabsTrigger value="reciters">Reciters</TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="recitations">
-                <RecitationsList 
-                  recitations={recitations}
-                  currentRecitation={currentRecitation}
-                  onSelectRecitation={changeRecitation}
-                />
-              </TabsContent>
-              
-              <TabsContent value="reciters">
-                <ReciterSelector 
-                  reciters={reciters}
-                  currentReciter={reciter}
-                  onSelectReciter={changeReciter}
-                  onRandomReciter={selectRandomReciter}
-                />
-              </TabsContent>
-            </Tabs>
+            <h3 className="text-lg font-medium mb-4">Change Reciter</h3>
+            <ReciterSelector 
+              reciters={reciters}
+              currentReciter={reciter}
+              onSelectReciter={changeReciter}
+              onRandomReciter={selectRandomReciter}
+            />
           </div>
         </div>
       )}
