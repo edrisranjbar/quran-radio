@@ -4,7 +4,6 @@ import AudioControls from './AudioControls';
 import ReciterSelector from './ReciterSelector';
 import useAudio from '../hooks/useAudio';
 import { Loader2, SkipBack, SkipForward } from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 
 const RadioPlayer: React.FC = () => {

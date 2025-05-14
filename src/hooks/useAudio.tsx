@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { toast } from '@/components/ui/use-toast';
 
 export interface QuranReciter {
   id: number;
@@ -104,7 +105,26 @@ const useAudio = () => {
 
   // Initialize audio element and set default reciter
   useEffect(() => {
-    audioRef.current = new Audio();
+    if (!audioRef.current) {
+      audioRef.current = new Audio();
+      
+      // Add event listeners
+      audioRef.current.addEventListener('ended', () => {
+        setIsPlaying(false);
+      });
+      
+      audioRef.current.addEventListener('error', (e) => {
+        console.error('Audio error:', e);
+        setIsPlaying(false);
+        setLoading(false);
+        toast({
+          title: "Playback Error",
+          description: "There was an error playing this recitation. Please try another.",
+          variant: "destructive"
+        });
+      });
+    }
+    
     audioRef.current.volume = volume;
     
     // Set default reciter when data is loaded
@@ -129,13 +149,20 @@ const useAudio = () => {
     return () => {
       if (audioRef.current) {
         audioRef.current.pause();
+        audioRef.current.removeEventListener('ended', () => {});
+        audioRef.current.removeEventListener('error', () => {});
         audioRef.current = null;
       }
     };
-  }, [reciters, currentReciterId]);
+  }, [reciters, currentReciterId, volume]);
 
   // Change reciter
   const changeReciter = (reciterId: number) => {
+    if (isPlaying && audioRef.current) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
+    
     setCurrentReciterId(reciterId);
     const reciterRecitations = recitationsMap[reciterId] || [];
     setRecitations(reciterRecitations);
@@ -143,41 +170,23 @@ const useAudio = () => {
     if (reciterRecitations.length > 0) {
       setCurrentRecitation(reciterRecitations[0]);
       if (audioRef.current) {
-        const wasPlaying = !audioRef.current.paused;
         audioRef.current.src = reciterRecitations[0].audioUrl;
         audioRef.current.load();
-        
-        if (wasPlaying) {
-          audioRef.current.play()
-            .then(() => {
-              setIsPlaying(true);
-            })
-            .catch(error => {
-              console.error('Error playing audio:', error);
-              setIsPlaying(false);
-            });
-        }
       }
     }
   };
 
   // Change recitation
   const changeRecitation = (recitation: QuranRecitation) => {
+    if (isPlaying && audioRef.current) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
+    
     setCurrentRecitation(recitation);
     if (audioRef.current) {
-      const wasPlaying = !audioRef.current.paused;
       audioRef.current.src = recitation.audioUrl;
       audioRef.current.load();
-      if (wasPlaying) {
-        audioRef.current.play()
-          .then(() => {
-            setIsPlaying(true);
-          })
-          .catch(error => {
-            console.error('Error playing audio:', error);
-            setIsPlaying(false);
-          });
-      }
     }
   };
 
@@ -207,26 +216,30 @@ const useAudio = () => {
   };
 
   // Toggle play/pause
-  const togglePlay = () => {
-    if (audioRef.current) {
-      setLoading(true);
-      
+  const togglePlay = async () => {
+    if (!audioRef.current || !currentRecitation) return;
+    
+    setLoading(true);
+    
+    try {
       if (isPlaying) {
         audioRef.current.pause();
         setIsPlaying(false);
-        setLoading(false);
       } else {
-        audioRef.current.play()
-          .then(() => {
-            setIsPlaying(true);
-          })
-          .catch(error => {
-            console.error('Error playing audio:', error);
-          })
-          .finally(() => {
-            setLoading(false);
+        try {
+          await audioRef.current.play();
+          setIsPlaying(true);
+        } catch (error) {
+          console.error('Error playing audio:', error);
+          toast({
+            title: "Playback Error",
+            description: "Unable to play audio. Please try again.",
+            variant: "destructive"
           });
+        }
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -243,6 +256,11 @@ const useAudio = () => {
   // Select random reciter
   const selectRandomReciter = () => {
     if (reciters.length > 0) {
+      if (isPlaying && audioRef.current) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      }
+      
       const randomIndex = Math.floor(Math.random() * reciters.length);
       changeReciter(reciters[randomIndex].id);
     }
