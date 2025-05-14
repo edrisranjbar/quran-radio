@@ -3,6 +3,12 @@ import { useState, useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { toast } from '@/components/ui/use-toast';
 
+export interface QuranReciter {
+  id: number;
+  name: string;
+  image?: string;
+}
+
 export interface QuranRecitation {
   id: number;
   name: string;
