@@ -1,7 +1,7 @@
-
 import type { Config } from "tailwindcss";
+import { fontFamily } from "tailwindcss/defaultTheme";
 
-export default {
+const config = {
 	darkMode: ["class"],
 	content: [
 		"./pages/**/*.{ts,tsx}",
@@ -64,18 +64,21 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				islamic: {
-					DEFAULT: '#1D4C82', // Deep blue
-					secondary: '#B39862', // Gold accent
-					light: '#F8F6EF', // Light background
-					dark: '#102442', // Deep accent
-					'dark-mode': '#213347', // Dark mode background
-					'dark-accent': '#304C75', // Dark mode accent
+					primary: "#1B4332",
+					secondary: "#2D6A4F",
+					accent: "#40916C",
+					light: "#74C69D",
+					lighter: "#B7E4C7",
 				},
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			fontFamily: {
+				sans: ["var(--font-sans)", ...fontFamily.sans],
+				arabic: ["var(--font-arabic)", ...fontFamily.sans],
 			},
 			keyframes: {
 				'accordion-down': {
@@ -105,10 +108,12 @@ export default {
 				'pulse-opacity': 'pulse-opacity 2s infinite ease-in-out'
 			},
 			backgroundImage: {
-				'islamic-pattern': "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0V30 60M0 30H60' stroke='%231D4C8210' stroke-width='1'/%3E%3C/svg%3E\")",
+				'islamic-pattern': "url('/patterns/islamic-pattern.svg')",
 				'islamic-pattern-dark': "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0V30 60M0 30H60' stroke='%23FFFFFF10' stroke-width='1'/%3E%3C/svg%3E\")"
 			}
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
 } satisfies Config;
+
+export default config;
