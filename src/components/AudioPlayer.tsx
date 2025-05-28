@@ -6,7 +6,6 @@ import { Progress } from './ui/progress';
 interface AudioTrack {
   id: string;
   title: string;
-  arabicTitle: string;
   artist: string;
   url: string;
   duration: string;
@@ -116,10 +115,10 @@ export function AudioPlayer({ tracks }: AudioPlayerProps) {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-gray-900/80 backdrop-blur-md border-t border-gray-800 p-4">
+    <div className="fixed bottom-0 left-0 right-0 bg-gray-900/80 backdrop-blur-md border-t border-gray-800 p-2 sm:p-4">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
+        <div className="flex flex-col sm:flex-row items-center sm:items-stretch justify-between gap-2 sm:gap-0">
+          <div className="flex items-center space-x-2 mb-2 sm:mb-0">
             <Button
               variant="ghost"
               size="icon"
@@ -156,18 +155,6 @@ export function AudioPlayer({ tracks }: AudioPlayerProps) {
             >
               <Repeat className="h-5 w-5" />
             </Button>
-          </div>
-          <div className="flex-1 mx-4">
-            <div className="text-sm font-medium text-gray-200">{currentTrack.title}</div>
-            <div className="text-xs text-emerald-400 mb-1">{currentTrack.arabicTitle}</div>
-            <div className="text-xs text-gray-400">{currentTrack.artist}</div>
-            <div className="flex items-center space-x-2 mt-2">
-              <span className="text-xs text-gray-400">{currentTime}</span>
-              <Progress value={progress} className="flex-1 bg-gray-800" />
-              <span className="text-xs text-gray-400">{duration}</span>
-            </div>
-          </div>
-          <div className="flex items-center space-x-2">
             <Button
               variant="ghost"
               size="icon"
@@ -187,8 +174,17 @@ export function AudioPlayer({ tracks }: AudioPlayerProps) {
               step="0.1"
               value={volume}
               onChange={handleVolumeChange}
-              className="w-20 accent-emerald-500"
+              className="w-16 sm:w-20 accent-emerald-500"
             />
+          </div>
+          <div className="flex-1 w-full sm:mx-4 flex flex-col sm:block items-center">
+            <div className="text-sm font-medium text-gray-200 text-center sm:text-left">{currentTrack.title}</div>
+            <div className="text-xs text-gray-400 text-center sm:text-left">{currentTrack.artist}</div>
+            <div className="flex items-center space-x-2 mt-1 w-full">
+              <span className="text-xs text-gray-400 min-w-[2.5rem]">{currentTime}</span>
+              <Progress value={progress} className="flex-1 bg-gray-800" />
+              <span className="text-xs text-gray-400 min-w-[2.5rem]">{duration}</span>
+            </div>
           </div>
         </div>
       </div>

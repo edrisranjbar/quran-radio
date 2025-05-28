@@ -4,7 +4,6 @@ import { Clock } from 'lucide-react';
 interface AudioTrack {
   id: string;
   title: string;
-  arabicTitle: string;
   artist: string;
   photo: string;
   url: string;
@@ -53,7 +52,6 @@ export function Queue({ tracks, currentTrackIndex, onTrackSelect }: QueueProps) 
                     </div>
                   </div>
                 </div>
-                <div className="text-sm arabic-text text-emerald-400 mb-1">{track.arabicTitle}</div>
                 <div className="text-sm text-gray-400 truncate">{track.artist}</div>
               </div>
             </div>

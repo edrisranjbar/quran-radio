@@ -7,7 +7,6 @@ const sampleTracks = [
   {
     id: '1',
     title: 'Surah Al-Fatiha',
-    arabicTitle: 'سورة الفاتحة',
     artist: 'Mishary Rashid Alafasy',
     photo: 'https://ui-avatars.com/api/?name=Mishary+Alafasy&background=1B4332&color=fff&size=400',
     url: '/quran-radio/audio/1.mp3',
@@ -16,7 +15,6 @@ const sampleTracks = [
   {
     id: '2',
     title: 'Surah Al-Baqarah',
-    arabicTitle: 'سورة البقرة',
     artist: 'Abdul Rahman Al-Sudais',
     photo: 'https://ui-avatars.com/api/?name=Abdul+Sudais&background=2D6A4F&color=fff&size=400',
     url: '/quran-radio/audio/2.mp3',
@@ -25,7 +23,6 @@ const sampleTracks = [
   {
     id: '3',
     title: 'Surah Yasin',
-    arabicTitle: 'سورة يس',
     artist: 'Saad Al-Ghamdi',
     photo: 'https://ui-avatars.com/api/?name=Saad+Al-Ghamdi&background=40916C&color=fff&size=400',
     url: '/quran-radio/audio/3.mp3',
@@ -48,7 +45,7 @@ const App = () => {
             Quran Radio
           </h1>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
-            Listen to beautiful recitations of the Holy Quran from renowned reciters around the world
+            Listen to beautiful recitations of the Holy Quran from renowned reciters
           </p>
         </header>
         
@@ -91,7 +88,6 @@ const App = () => {
                       />
                     </div>
                     <div className="text-xl font-medium text-gray-100 mb-1">{sampleTracks[currentTrackIndex].title}</div>
-                    <div className="text-2xl arabic-text text-emerald-400 mb-2">{sampleTracks[currentTrackIndex].arabicTitle}</div>
                     <div className="text-sm text-gray-400">{sampleTracks[currentTrackIndex].artist}</div>
                   </div>
                 </div>
