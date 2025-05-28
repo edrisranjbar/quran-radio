@@ -63,18 +63,8 @@ const App = () => {
                   </div>
                 </div>
               </div>
-              <div className="aspect-video bg-gradient-to-br from-gray-800/50 to-gray-900/50 rounded-xl flex items-center justify-center border border-gray-800/50 shadow-inner overflow-hidden">
+              <div className="aspect-video rounded-xl flex items-center justify-center overflow-hidden">
                 <div className="text-center relative w-full h-full">
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900/90 z-10" />
-                  <img 
-                    src={sampleTracks[currentTrackIndex].photo} 
-                    alt={sampleTracks[currentTrackIndex].artist}
-                    className="w-full h-full object-cover opacity-50"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(sampleTracks[currentTrackIndex].artist)}&background=1B4332&color=fff&size=400`;
-                    }}
-                  />
                   <div className="absolute inset-0 flex flex-col items-center justify-center z-20">
                     <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-emerald-500/20 mb-4 bg-gray-800">
                       <img 

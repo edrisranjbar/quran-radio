@@ -180,7 +180,7 @@ export function AudioPlayer({ tracks }: AudioPlayerProps) {
           <div className="flex-1 w-full sm:mx-4 flex flex-col sm:block items-center">
             <div className="text-sm font-medium text-gray-200 text-center sm:text-left">{currentTrack.title}</div>
             <div className="text-xs text-gray-400 text-center sm:text-left">{currentTrack.artist}</div>
-            <div className="flex items-center space-x-2 mt-1 w-full">
+            <div className="flex items-center space-x-2 mt-1 w-full mb-2">
               <span className="text-xs text-gray-400 min-w-[2.5rem]">{currentTime}</span>
               <Progress value={progress} className="flex-1 bg-gray-800" />
               <span className="text-xs text-gray-400 min-w-[2.5rem]">{duration}</span>
