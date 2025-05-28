@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AudioPlayer } from './components/AudioPlayer';
 import { Queue } from './components/Queue';
-import { Volume2, Clock, Heart, User } from 'lucide-react';
+import { Volume2, Clock } from 'lucide-react';
 
 const sampleTracks = [
   {
@@ -10,9 +10,8 @@ const sampleTracks = [
     arabicTitle: 'سورة الفاتحة',
     artist: 'Mishary Rashid Alafasy',
     photo: 'https://ui-avatars.com/api/?name=Mishary+Alafasy&background=1B4332&color=fff&size=400',
-    url: '/audio/surah-fatiha.mp3',
-    duration: '3:45',
-    likes: 1234
+    url: '/quran-radio/audio/1.mp3',
+    duration: '4:32'
   },
   {
     id: '2',
@@ -20,9 +19,8 @@ const sampleTracks = [
     arabicTitle: 'سورة البقرة',
     artist: 'Abdul Rahman Al-Sudais',
     photo: 'https://ui-avatars.com/api/?name=Abdul+Sudais&background=2D6A4F&color=fff&size=400',
-    url: '/audio/surah-baqarah.mp3',
-    duration: '4:20',
-    likes: 2345
+    url: '/quran-radio/audio/2.mp3',
+    duration: '3:15'
   },
   {
     id: '3',
@@ -30,9 +28,8 @@ const sampleTracks = [
     arabicTitle: 'سورة يس',
     artist: 'Saad Al-Ghamdi',
     photo: 'https://ui-avatars.com/api/?name=Saad+Al-Ghamdi&background=40916C&color=fff&size=400',
-    url: '/audio/surah-yasin.mp3',
-    duration: '5:15',
-    likes: 3456
+    url: '/quran-radio/audio/3.mp3',
+    duration: '5:48'
   }
 ];
 
@@ -67,10 +64,6 @@ const App = () => {
                     <Clock className="h-4 w-4 mr-1" />
                     <span className="text-sm font-medium">{sampleTracks[currentTrackIndex].duration}</span>
                   </div>
-                  <button className="flex items-center text-gray-400 hover:text-emerald-400 transition-colors">
-                    <Heart className="h-4 w-4 mr-1" />
-                    <span className="text-sm font-medium">{sampleTracks[currentTrackIndex].likes}</span>
-                  </button>
                 </div>
               </div>
               <div className="aspect-video bg-gradient-to-br from-gray-800/50 to-gray-900/50 rounded-xl flex items-center justify-center border border-gray-800/50 shadow-inner overflow-hidden">

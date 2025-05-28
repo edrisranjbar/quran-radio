@@ -1,5 +1,5 @@
 import { ScrollArea } from './ui/scroll-area';
-import { Clock, Heart, User } from 'lucide-react';
+import { Clock } from 'lucide-react';
 
 interface AudioTrack {
   id: string;
@@ -9,7 +9,6 @@ interface AudioTrack {
   photo: string;
   url: string;
   duration: string;
-  likes: number;
 }
 
 interface QueueProps {
@@ -51,10 +50,6 @@ export function Queue({ tracks, currentTrackIndex, onTrackSelect }: QueueProps) 
                     <div className="flex items-center text-gray-400">
                       <Clock className="h-3 w-3 mr-1" />
                       <span className="font-medium">{track.duration}</span>
-                    </div>
-                    <div className="flex items-center text-gray-400">
-                      <Heart className="h-3 w-3 mr-1" />
-                      <span className="font-medium">{track.likes}</span>
                     </div>
                   </div>
                 </div>

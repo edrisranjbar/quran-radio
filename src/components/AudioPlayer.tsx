@@ -1,13 +1,15 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button } from './ui/button';
-import { Play, Pause, SkipForward, SkipBack } from 'lucide-react';
+import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Repeat } from 'lucide-react';
 import { Progress } from './ui/progress';
 
 interface AudioTrack {
   id: string;
   title: string;
+  arabicTitle: string;
   artist: string;
   url: string;
+  duration: string;
 }
 
 interface AudioPlayerProps {
@@ -18,6 +20,11 @@ export function AudioPlayer({ tracks }: AudioPlayerProps) {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [currentTime, setCurrentTime] = useState('0:00');
+  const [duration, setDuration] = useState(tracks[0].duration);
+  const [isMuted, setIsMuted] = useState(false);
+  const [volume, setVolume] = useState(1);
+  const [isRepeat, setIsRepeat] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const currentTrack = tracks[currentTrackIndex];
@@ -25,12 +32,34 @@ export function AudioPlayer({ tracks }: AudioPlayerProps) {
   useEffect(() => {
     if (audioRef.current) {
       if (isPlaying) {
-        audioRef.current.play();
+        audioRef.current.play().catch(error => {
+          console.error('Error playing audio:', error);
+          setIsPlaying(false);
+        });
       } else {
         audioRef.current.pause();
       }
     }
   }, [isPlaying, currentTrackIndex]);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+      audioRef.current.muted = isMuted;
+    }
+  }, [volume, isMuted]);
+
+  useEffect(() => {
+    setDuration(currentTrack.duration);
+    setCurrentTime('0:00');
+    setProgress(0);
+  }, [currentTrackIndex, currentTrack.duration]);
+
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
 
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
@@ -50,11 +79,40 @@ export function AudioPlayer({ tracks }: AudioPlayerProps) {
     if (audioRef.current) {
       const progress = (audioRef.current.currentTime / audioRef.current.duration) * 100;
       setProgress(progress);
+      setCurrentTime(formatTime(audioRef.current.currentTime));
+    }
+  };
+
+  const handleLoadedMetadata = () => {
+    if (audioRef.current) {
+      const actualDuration = formatTime(audioRef.current.duration);
+      setDuration(actualDuration);
     }
   };
 
   const handleEnded = () => {
-    handleNext();
+    if (isRepeat) {
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.play();
+      }
+    } else {
+      handleNext();
+    }
+  };
+
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newVolume = parseFloat(e.target.value);
+    setVolume(newVolume);
+    setIsMuted(newVolume === 0);
+  };
+
+  const toggleMute = () => {
+    setIsMuted(!isMuted);
+  };
+
+  const toggleRepeat = () => {
+    setIsRepeat(!isRepeat);
   };
 
   return (
@@ -90,11 +148,47 @@ export function AudioPlayer({ tracks }: AudioPlayerProps) {
             >
               <SkipForward className="h-5 w-5" />
             </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleRepeat}
+              className={`text-gray-400 hover:text-gray-200 hover:bg-gray-800/50 ${isRepeat ? 'text-emerald-400' : ''}`}
+            >
+              <Repeat className="h-5 w-5" />
+            </Button>
           </div>
           <div className="flex-1 mx-4">
             <div className="text-sm font-medium text-gray-200">{currentTrack.title}</div>
+            <div className="text-xs text-emerald-400 mb-1">{currentTrack.arabicTitle}</div>
             <div className="text-xs text-gray-400">{currentTrack.artist}</div>
-            <Progress value={progress} className="mt-2 bg-gray-800" />
+            <div className="flex items-center space-x-2 mt-2">
+              <span className="text-xs text-gray-400">{currentTime}</span>
+              <Progress value={progress} className="flex-1 bg-gray-800" />
+              <span className="text-xs text-gray-400">{duration}</span>
+            </div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleMute}
+              className="text-gray-400 hover:text-gray-200 hover:bg-gray-800/50"
+            >
+              {isMuted ? (
+                <VolumeX className="h-5 w-5" />
+              ) : (
+                <Volume2 className="h-5 w-5" />
+              )}
+            </Button>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.1"
+              value={volume}
+              onChange={handleVolumeChange}
+              className="w-20 accent-emerald-500"
+            />
           </div>
         </div>
       </div>
@@ -102,7 +196,9 @@ export function AudioPlayer({ tracks }: AudioPlayerProps) {
         ref={audioRef}
         src={currentTrack.url}
         onTimeUpdate={handleTimeUpdate}
+        onLoadedMetadata={handleLoadedMetadata}
         onEnded={handleEnded}
+        preload="metadata"
       />
     </div>
   );
