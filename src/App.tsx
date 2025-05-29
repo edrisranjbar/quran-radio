@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { AudioPlayer } from './components/AudioPlayer';
 import { Header } from './components/Header';
 import { StationList } from './components/StationList';
@@ -6,42 +6,59 @@ import { Player } from './components/Player';
 import { Footer } from './components/Footer';
 import { Playlist } from './components/Playlist';
 
-const stations = [
+interface Track {
+  id: string;
+  title: string;
+  artist: string;
+  photo: string;
+  url: string;
+  duration: string;
+}
+
+interface Station {
+  id: string;
+  name: string;
+  description: string;
+  tracks: Track[];
+  disabled?: boolean;
+}
+
+const stations: Station[] = [
   {
-    id: '1',
+    id: 'tartil',
     name: 'Tartil Style',
-    description: 'Modern recitation style with beautiful melodies and clear pronunciation',
+    description: 'Beautiful and measured recitation by Mansour As-salemi',
     tracks: [
       {
-        id: '4',
-        title: 'Surah Al-Fatiha',
+        id: '1',
+        title: 'Surah Maryam',
         artist: 'Mansour As-salemi',
         photo: 'https://ui-avatars.com/api/?name=Mansour+As-salemi&background=40916C&color=fff&size=400',
-        url: 'https://server8.mp3quran.net/mansour/001.mp3',
-        duration: '4:20'
+        url: '/audio/1.mp3',
+        duration: '00:03:45'
       },
       {
-        id: '5',
-        title: 'Surah Al-Baqarah',
-        artist: 'Mansour As-salemi',
+        id: '2',
+        title: 'Surah Houd',
+        artist: 'Unknown',
         photo: 'https://ui-avatars.com/api/?name=Mansour+As-salemi&background=40916C&color=fff&size=400',
-        url: 'https://server8.mp3quran.net/mansour/002.mp3',
-        duration: '6:15'
+        url: '/audio/3.mp3',
+        duration: '00:15:30'
       },
       {
-        id: '6',
-        title: 'Surah Yasin',
+        id: '3',
+        title: 'Surah Al-Mumenun',
         artist: 'Mansour As-salemi',
         photo: 'https://ui-avatars.com/api/?name=Mansour+As-salemi&background=40916C&color=fff&size=400',
-        url: 'https://server8.mp3quran.net/mansour/036.mp3',
-        duration: '5:30'
+        url: '/audio/momenun-salemi.mp3',
+        duration: '00:12:30'
       }
     ]
   },
   {
-    id: '2',
-    name: 'Tahqiq Style',
-    description: 'Classical recitation style with precise tajweed and measured pace (Coming Soon)',
+    id: 'research',
+    name: 'Research Style',
+    description: 'Coming Soon',
     disabled: true,
     tracks: []
   }
@@ -87,7 +104,12 @@ const App = () => {
         </main>
       </div>
       
-      <AudioPlayer tracks={currentStation.tracks} onPlayStateChange={setIsPlaying} />
+      <AudioPlayer 
+        tracks={currentStation.tracks} 
+        onPlayStateChange={setIsPlaying}
+        currentTrackIndex={currentTrackIndex}
+        onTrackChange={setCurrentTrackIndex}
+      />
       <Footer />
     </div>
   );

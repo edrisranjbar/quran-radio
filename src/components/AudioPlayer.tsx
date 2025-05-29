@@ -14,10 +14,11 @@ interface AudioTrack {
 interface AudioPlayerProps {
   tracks: AudioTrack[];
   onPlayStateChange?: (playing: boolean) => void;
+  currentTrackIndex: number;
+  onTrackChange: (index: number) => void;
 }
 
-export function AudioPlayer({ tracks, onPlayStateChange }: AudioPlayerProps) {
-  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+export function AudioPlayer({ tracks, onPlayStateChange, currentTrackIndex, onTrackChange }: AudioPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState('0:00');
@@ -73,12 +74,12 @@ export function AudioPlayer({ tracks, onPlayStateChange }: AudioPlayerProps) {
   };
 
   const handleNext = () => {
-    setCurrentTrackIndex((prev) => (prev + 1) % tracks.length);
+    onTrackChange((currentTrackIndex + 1) % tracks.length);
     setIsPlaying(true);
   };
 
   const handlePrevious = () => {
-    setCurrentTrackIndex((prev) => (prev - 1 + tracks.length) % tracks.length);
+    onTrackChange((currentTrackIndex - 1 + tracks.length) % tracks.length);
     setIsPlaying(true);
   };
 
