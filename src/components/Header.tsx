@@ -9,8 +9,8 @@ export const Header: FC<HeaderProps> = ({ title, description }) => {
   return (
     <header className="text-center mb-8">
       <div className="flex items-center justify-center mb-4">
-        <img src="quran-icon.svg" alt="Quran Radio Logo" className="h-12 w-12 md:h-16 md:w-16 mr-4 pulse" />
-        <h1 className="text-3xl md:text-5xl font-bold text-gradient">
+        <img src="quran-icon.svg" alt="Quran Radio Logo" className="h-8 w-8 md:h-10 md:w-10 mr-3 pulse" />
+        <h1 className="text-2xl md:text-4xl font-bold text-gradient">
           {title}
         </h1>
       </div>
