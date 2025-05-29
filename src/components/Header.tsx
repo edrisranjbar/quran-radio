@@ -1,21 +1,22 @@
+import { FC } from 'react';
 
-import React from 'react';
+interface HeaderProps {
+  title: string;
+  description: string;
+}
 
-const Header: React.FC = () => {
+export const Header: FC<HeaderProps> = ({ title, description }) => {
   return (
-    <header className="py-4 px-4">
-      <div className="container mx-auto flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl md:text-3xl font-bold text-primary mb-1">
-            Quran Radio
-          </h1>
-          <p className="text-xs md:text-sm text-muted-foreground">
-            Listen to beautiful recitations
-          </p>
-        </div>
+    <header className="text-center mb-8">
+      <div className="flex items-center justify-center mb-4">
+        <img src="quran-icon.svg" alt="Quran Radio Logo" className="h-12 w-12 md:h-16 md:w-16 mr-4 pulse" />
+        <h1 className="text-3xl md:text-5xl font-bold text-gradient">
+          {title}
+        </h1>
       </div>
+      <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-4">
+        {description}
+      </p>
     </header>
   );
 };
-
-export default Header;

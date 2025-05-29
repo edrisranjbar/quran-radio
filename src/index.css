@@ -161,15 +161,25 @@
 
 /* Glass effect */
 .glass {
-  @apply bg-gray-900/50 backdrop-blur-sm border border-gray-800/50;
+  @apply bg-gray-900/50 backdrop-blur-lg border border-gray-800/50;
 }
 
 /* Text gradient */
 .text-gradient {
-  @apply bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 bg-clip-text text-transparent;
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-600;
 }
 
 /* Card hover effect */
 .card-hover {
-  @apply transition-all duration-200 hover:border-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/5;
+  @apply transition-all duration-300 hover:border-emerald-500/30 hover:shadow-emerald-500/10;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.pulse {
+  animation: pulse 2s infinite;
 }
