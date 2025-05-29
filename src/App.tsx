@@ -88,7 +88,7 @@ const App = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-950 to-gray-900 text-gray-100">
-      <div className="flex-1 max-w-7xl mx-auto px-4 py-6 w-full">
+      <div className="flex-1 max-w-7xl mx-auto px-4 py-6 w-full pb-28 md:pb-0">
         <Header 
           title="Quran Radio"
           description="Listen to beautiful recitations of the Holy Quran from renowned reciters"
