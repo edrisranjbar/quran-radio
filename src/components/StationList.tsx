@@ -6,6 +6,7 @@ interface Station {
   name: string;
   description: string;
   tracks: Track[];
+  disabled?: boolean;
 }
 
 interface Track {
@@ -38,12 +39,15 @@ export const StationList: FC<StationListProps> = ({
         {stations.map((station, index) => (
           <button
             key={station.id}
-            onClick={() => onStationSelect(index)}
+            onClick={() => !station.disabled && onStationSelect(index)}
             className={`w-full text-left p-3 rounded-lg transition-all duration-200 ${
-              currentStationIndex === index
+              station.disabled
+                ? 'opacity-50 cursor-not-allowed bg-gray-800/30'
+                : currentStationIndex === index
                 ? 'bg-emerald-500/20 border border-emerald-500/30'
                 : 'hover:bg-gray-800/50 border border-transparent'
             }`}
+            disabled={station.disabled}
           >
             <div className="font-medium text-gray-100">{station.name}</div>
             <div className="text-sm text-gray-400">{station.description}</div>

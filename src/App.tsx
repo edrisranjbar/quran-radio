@@ -9,72 +9,41 @@ import { Playlist } from './components/Playlist';
 const stations = [
   {
     id: '1',
-    name: 'Mishary Rashid Alafasy',
-    description: 'Beautiful recitations by Sheikh Mishary Rashid Alafasy',
+    name: 'Tartil Style',
+    description: 'Modern recitation style with beautiful melodies and clear pronunciation',
     tracks: [
       {
-        id: '1',
+        id: '4',
         title: 'Surah Al-Fatiha',
-        artist: 'Mishary Rashid Alafasy',
-        photo: 'https://ui-avatars.com/api/?name=Mishary+Alafasy&background=1B4332&color=fff&size=400',
-        url: '/quran-radio/audio/1.mp3',
-        duration: '4:32'
+        artist: 'Mansour As-salemi',
+        photo: 'https://ui-avatars.com/api/?name=Mansour+As-salemi&background=40916C&color=fff&size=400',
+        url: 'https://server8.mp3quran.net/mansour/001.mp3',
+        duration: '4:20'
       },
       {
-        id: '2',
+        id: '5',
         title: 'Surah Al-Baqarah',
-        artist: 'Mishary Rashid Alafasy',
-        photo: 'https://ui-avatars.com/api/?name=Mishary+Alafasy&background=1B4332&color=fff&size=400',
-        url: '/quran-radio/audio/2.mp3',
-        duration: '3:15'
+        artist: 'Mansour As-salemi',
+        photo: 'https://ui-avatars.com/api/?name=Mansour+As-salemi&background=40916C&color=fff&size=400',
+        url: 'https://server8.mp3quran.net/mansour/002.mp3',
+        duration: '6:15'
+      },
+      {
+        id: '6',
+        title: 'Surah Yasin',
+        artist: 'Mansour As-salemi',
+        photo: 'https://ui-avatars.com/api/?name=Mansour+As-salemi&background=40916C&color=fff&size=400',
+        url: 'https://server8.mp3quran.net/mansour/036.mp3',
+        duration: '5:30'
       }
     ]
   },
   {
     id: '2',
-    name: 'Abdul Rahman Al-Sudais',
-    description: 'Powerful recitations by Sheikh Abdul Rahman Al-Sudais',
-    tracks: [
-      {
-        id: '3',
-        title: 'Surah Yasin',
-        artist: 'Abdul Rahman Al-Sudais',
-        photo: 'https://ui-avatars.com/api/?name=Abdul+Sudais&background=2D6A4F&color=fff&size=400',
-        url: '/quran-radio/audio/3.mp3',
-        duration: '5:48'
-      },
-      {
-        id: '4',
-        title: 'Surah Ar-Rahman',
-        artist: 'Abdul Rahman Al-Sudais',
-        photo: 'https://ui-avatars.com/api/?name=Abdul+Sudais&background=2D6A4F&color=fff&size=400',
-        url: '/quran-radio/audio/4.mp3',
-        duration: '4:20'
-      }
-    ]
-  },
-  {
-    id: '3',
-    name: 'Saad Al-Ghamdi',
-    description: 'Melodic recitations by Sheikh Saad Al-Ghamdi',
-    tracks: [
-      {
-        id: '5',
-        title: 'Surah Al-Mulk',
-        artist: 'Saad Al-Ghamdi',
-        photo: 'https://ui-avatars.com/api/?name=Saad+Al-Ghamdi&background=40916C&color=fff&size=400',
-        url: '/quran-radio/audio/5.mp3',
-        duration: '6:15'
-      },
-      {
-        id: '6',
-        title: 'Surah Al-Waqiah',
-        artist: 'Saad Al-Ghamdi',
-        photo: 'https://ui-avatars.com/api/?name=Saad+Al-Ghamdi&background=40916C&color=fff&size=400',
-        url: '/quran-radio/audio/6.mp3',
-        duration: '5:30'
-      }
-    ]
+    name: 'Tahqiq Style',
+    description: 'Classical recitation style with precise tajweed and measured pace (Coming Soon)',
+    disabled: true,
+    tracks: []
   }
 ];
 
