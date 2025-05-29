@@ -18,7 +18,7 @@ interface QueueProps {
 
 export function Queue({ tracks, currentTrackIndex, onTrackSelect }: QueueProps) {
   return (
-    <ScrollArea className="h-[calc(100vh-12rem)]">
+    <ScrollArea>
       <div className="space-y-2 p-4">
         {tracks.map((track, index) => (
           <div
