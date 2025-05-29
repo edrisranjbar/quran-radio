@@ -183,3 +183,13 @@
 .pulse {
   animation: pulse 2s infinite;
 }
+
+@keyframes wave {
+  0%, 100% { transform: scaleY(0.5); }
+  50% { transform: scaleY(1); }
+}
+
+.animate-wave {
+  animation: wave 1.5s ease-in-out infinite;
+  transform-origin: bottom;
+}

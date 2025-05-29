@@ -13,9 +13,10 @@ interface AudioTrack {
 
 interface AudioPlayerProps {
   tracks: AudioTrack[];
+  onPlayStateChange?: (playing: boolean) => void;
 }
 
-export function AudioPlayer({ tracks }: AudioPlayerProps) {
+export function AudioPlayer({ tracks, onPlayStateChange }: AudioPlayerProps) {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -53,6 +54,13 @@ export function AudioPlayer({ tracks }: AudioPlayerProps) {
     setCurrentTime('0:00');
     setProgress(0);
   }, [currentTrackIndex, currentTrack.duration]);
+
+  // Notify parent about play state changes
+  useEffect(() => {
+    if (onPlayStateChange) {
+      onPlayStateChange(isPlaying);
+    }
+  }, [isPlaying, onPlayStateChange]);
 
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);

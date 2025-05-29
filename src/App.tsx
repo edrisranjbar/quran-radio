@@ -81,6 +81,7 @@ const stations = [
 const App = () => {
   const [currentStationIndex, setCurrentStationIndex] = useState(0);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const currentStation = stations[currentStationIndex];
   const currentTrack = currentStation.tracks[currentTrackIndex];
@@ -93,9 +94,9 @@ const App = () => {
           description="Listen to beautiful recitations of the Holy Quran from renowned reciters"
         />
         
-        <main className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="md:col-span-2">
-            <Player track={currentTrack} />
+        <main className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+          <div className="md:col-span-2 flex flex-col">
+            <Player track={currentTrack} isPlaying={isPlaying} />
           </div>
           
           <div className="space-y-6">
@@ -117,7 +118,7 @@ const App = () => {
         </main>
       </div>
       
-      <AudioPlayer tracks={currentStation.tracks} />
+      <AudioPlayer tracks={currentStation.tracks} onPlayStateChange={setIsPlaying} />
       <Footer />
     </div>
   );
