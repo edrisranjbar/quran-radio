@@ -8,13 +8,16 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    headers: {
+      'Content-Type': 'application/javascript',
+    },
   },
   plugins: [
     react(),
     mode === 'development' &&
     componentTagger(),
   ].filter(Boolean),
-  base: '/quran-radio/',
+  base: process.env.NODE_ENV === 'production' ? '/quran-radio/' : '/',
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -25,5 +28,10 @@ export default defineConfig(({ mode }) => ({
     assetsDir: 'assets',
     emptyOutDir: true,
     sourcemap: true,
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
+    },
   },
 }));
