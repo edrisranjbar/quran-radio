@@ -22,6 +22,8 @@ export default defineConfig({
   },
   define: {
     __DEFINES__: {},
+    __HMR_CONFIG_NAME__: '{}',
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
   },
   build: {
     outDir: 'dist',
