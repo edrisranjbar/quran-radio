@@ -6,11 +6,11 @@ import path from "path";
 export default defineConfig({
   plugins: [
     react({
-      // Explicitly disable React Refresh
-      fastRefresh: false,
+      // Disable React Refresh
+      jsxRuntime: 'automatic',
     }),
   ],
-  base: '/',
+  base: '/quran-radio/',
   server: {
     port: 8080,
     hmr: false,
