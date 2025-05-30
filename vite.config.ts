@@ -26,6 +26,7 @@ export default defineConfig(({ mode }) => ({
     emptyOutDir: true,
     sourcemap: true,
     rollupOptions: {
+      external: ['/@react-refresh'],
       output: {
         manualChunks: undefined,
       },

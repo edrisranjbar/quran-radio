@@ -29,24 +29,24 @@ const stations: Station[] = [
     name: 'Tartil Style',
     description: 'Beautiful and measured recitation by Mansour As-salemi',
     tracks: [
-      {
-        id: '1',
+  {
+    id: '1',
         title: 'Surah Maryam',
         artist: 'Mansour As-salemi',
         photo: 'https://ui-avatars.com/api/?name=Mansour+As-salemi&background=40916C&color=fff&size=400',
         url: '/audio/1.mp3',
         duration: '00:03:45'
-      },
-      {
-        id: '2',
+  },
+  {
+    id: '2',
         title: 'Surah Houd',
         artist: 'Unknown',
         photo: 'https://ui-avatars.com/api/?name=Mansour+As-salemi&background=40916C&color=fff&size=400',
         url: '/audio/3.mp3',
         duration: '00:15:30'
-      },
-      {
-        id: '3',
+  },
+  {
+    id: '3',
         title: 'Surah Al-Mumenun',
         artist: 'Mansour As-salemi',
         photo: 'https://ui-avatars.com/api/?name=Mansour+As-salemi&background=40916C&color=fff&size=400',
