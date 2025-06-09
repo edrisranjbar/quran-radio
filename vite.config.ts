@@ -13,17 +13,11 @@ export default defineConfig(({ mode }) => ({
     react({
       plugins: [],
     }),
-    mode === 'development' &&
-    componentTagger(),
+    mode === "development" && componentTagger(),
   ].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-    },
-  },
-  build: {
-    rollupOptions: {
-      external: ['/@react-refresh', '/@react-refresh/runtime'],
     },
   },
 }));
