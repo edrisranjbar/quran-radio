@@ -5,7 +5,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: '/quran-radio/',
+  base: mode === 'production' ? '/quran-radio/' : '/',
   server: {
     host: "::",
     port: 8080,
