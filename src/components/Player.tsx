@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { Volume2, Clock } from 'lucide-react';
 import { AudioWave } from './AudioWave';
+import { ListenerCount } from './ListenerCount';
 
 interface Track {
   id: string;
@@ -25,6 +26,7 @@ export const Player: FC<PlayerProps> = ({ track, isPlaying = false }) => {
           Live Streaming
         </h2>
         <div className="flex items-center space-x-4">
+          <ListenerCount />
           <div className="flex items-center text-gray-400">
             <Clock className="h-4 w-4 mr-1" />
             <span className="text-sm font-medium">{track.duration}</span>
