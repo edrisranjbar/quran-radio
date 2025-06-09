@@ -9,7 +9,7 @@ interface Track {
   artist: string;
   photo: string;
   url: string;
-  duration: string;
+  duration: string; 
 }
 
 interface PlayerProps {
@@ -25,12 +25,8 @@ export const Player: FC<PlayerProps> = ({ track, isPlaying = false }) => {
           <Volume2 className="h-5 w-5 text-emerald-400 mr-2" />
           Live Streaming
         </h2>
-        <div className="flex items-center space-x-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
           <ListenerCount />
-          <div className="flex items-center text-gray-400">
-            <Clock className="h-4 w-4 mr-1" />
-            <span className="text-sm font-medium">{track.duration}</span>
-          </div>
         </div>
       </div>
       <div className="aspect-video rounded-xl flex items-center justify-center overflow-hidden bg-gray-950/50">
