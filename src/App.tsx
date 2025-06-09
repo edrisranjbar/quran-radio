@@ -57,7 +57,7 @@ const stations: Station[] = [
   },
   {
     id: 'research',
-    name: 'Research Style',
+    name: 'Tahqiq Style',
     description: 'Coming Soon',
     disabled: true,
     tracks: []
