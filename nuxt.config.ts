@@ -29,7 +29,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      socketUrl: process.env.NUXT_PUBLIC_SOCKET_URL || 'http://localhost:3001'
+      socketUrl: process.env.NUXT_PUBLIC_SOCKET_URL || (process.env.NODE_ENV === 'production' ? 'https://online-nour-cast.ir' : 'http://localhost:3001')
     }
   }
 })
