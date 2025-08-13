@@ -1,65 +1,37 @@
-# Quran Radio
+Quran Radio – Tahqiq & Tartil
+================================
 
-A beautiful web application for listening to Quranic recitations from renowned reciters around the world.
+Elegant, mobile‑first Quran radio built with Nuxt 4 + Tailwind CSS.
 
-## Features
+Features
+--------
+- Two stations: Tahqiq (slow, precise) and Tartil (measured, melodious)
+- Modern, dark UI with Islamic accents
+- Realtime listener count via Socket.IO
+- SEO‑optimized meta tags for “Quran Radio” and “Online Quran Radio”
 
-- 🎧 High-quality audio streaming
-- 🌙 Dark mode support
-- 📱 Responsive design
-- 🎯 Beautiful UI with glass morphism
-- 🌐 Arabic text support
-- ⭐ Favorites system
-- 📊 Track duration and likes display
+Getting Started
+---------------
+1. Install deps:
+   npm install
+2. Start Socket.IO server (port 3001):
+   node server.mjs
+3. Dev server:
+   npm run dev
 
-## Tech Stack
-
-- React
-- TypeScript
-- Tailwind CSS
-- Vite
-- Lucide Icons
-
-## Getting Started
-
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/quran-radio.git
-cd quran-radio
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Start the development server:
-```bash
-npm run dev
-```
-
-4. Build for production:
-```bash
+Build
+-----
 npm run build
-```
+node .output/server/index.mjs
 
-## Deployment
+Configuration
+-------------
+- Public socket URL: `NUXT_PUBLIC_SOCKET_URL` (defaults to http://localhost:3001)
+- Favicon: replace `public/quran-icon.svg`
 
-This project is automatically deployed to GitHub Pages when changes are pushed to the main branch. The deployment process is handled by GitHub Actions.
+Tech Stack
+----------
+- Nuxt 4, Vue 3, Tailwind CSS, Socket.IO
 
-## Contributing
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- All reciters for their beautiful recitations
-- The open-source community for their amazing tools and libraries
