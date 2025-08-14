@@ -78,6 +78,7 @@ export default <Partial<Config>>{
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
         arabic: ["var(--font-arabic)", ...fontFamily.sans],
+        display: ["Inter", "var(--font-sans)", ...fontFamily.sans],
       },
       keyframes: {
         'accordion-down': { from: { height: '0' }, to: { height: 'var(--radix-accordion-content-height)' } },

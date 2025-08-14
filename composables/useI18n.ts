@@ -2,8 +2,11 @@ import { ref, computed } from 'vue'
 
 export type Language = 'en' | 'ar' | 'fa'
 
+// Global state to ensure single instance
+const globalLanguage = ref<Language>('en')
+
 export function useI18n() {
-  const currentLanguage = ref<Language>('en')
+  const currentLanguage = globalLanguage
 
   const translations = {
     en: {
