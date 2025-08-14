@@ -24,12 +24,15 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div 
-    class="flex items-center text-sm text-gray-400"
-    :class="isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'"
-  >
-    <Users class="h-4 w-4" />
-    <span :class="{ 'font-arabic': isRTL }">{{ count }} {{ t.listeningNow }}</span>
+  <div class="flex items-center text-sm text-gray-400 gap-2">
+    <template v-if="!isRTL">
+      <Users class="h-4 w-4" />
+      <span>{{ count }} {{ t.listeningNow }}</span>
+    </template>
+    <template v-else>
+      <span class="font-arabic">{{ count }} {{ t.listeningNow }}</span>
+      <Users class="h-4 w-4" />
+    </template>
   </div>
   
 </template>

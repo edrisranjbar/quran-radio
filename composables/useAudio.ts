@@ -19,18 +19,6 @@ export interface Station {
 export function useAudio() {
   const stations = ref<Station[]>([
     {
-      key: 'tahqiq',
-      name: 'Tahqiq Station',
-      nameArabic: 'إذاعة التحقيق',
-      namePersian: 'ایستگاه تحقیق',
-      description: 'Slow, precise recitation for deep reflection.',
-      enabled: false,
-      tracks: [
-        { id: 1, title: 'Surah Al-Fatiha (Tahqiq)', audioUrl: '/audio/1.mp3' },
-        { id: 2, title: 'Surah Al-Baqarah (Tahqiq)', audioUrl: '/audio/2.mp3' },
-      ]
-    },
-    {
       key: 'tartil',
       name: 'Tartil Station',
       nameArabic: 'إذاعة الترتيل',
@@ -49,6 +37,18 @@ export function useAudio() {
         { id: 11, title: '', audioUrl: '/audio/9.mp3' },
         { id: 12, title: '', audioUrl: '/audio/10.mp3' },
       ]
+    },
+    {
+      key: 'tahqiq',
+      name: 'Tahqiq Station',
+      nameArabic: 'إذاعة التحقيق',
+      namePersian: 'ایستگاه تحقیق',
+      description: 'Slow, precise recitation for deep reflection.',
+      enabled: false,
+      tracks: [
+        { id: 1, title: 'Surah Al-Fatiha (Tahqiq)', audioUrl: '/audio/1.mp3' },
+        { id: 2, title: 'Surah Al-Baqarah (Tahqiq)', audioUrl: '/audio/2.mp3' },
+      ]
     }
   ])
 
@@ -59,6 +59,7 @@ export function useAudio() {
   const currentStation = ref<Station | null>(stations.value[0] || null)
   const currentTrack = ref<AudioTrack | null>(stations.value[0]?.tracks[0] || null)
   const audioRef = ref<HTMLAudioElement | null>(null)
+  const autoplayAttempted = ref(false)
 
   const stationTracks = computed(() => currentStation.value?.tracks ?? [])
 
@@ -73,7 +74,7 @@ export function useAudio() {
         audioRef.value.src = currentTrack.value.audioUrl
         audioRef.value.load()
         audioRef.value.play().catch(() => {
-          isPlaying.value = false
+      isPlaying.value = false
         })
       }
     }
@@ -85,10 +86,18 @@ export function useAudio() {
 
     audioRef.value.addEventListener('ended', handleEnded)
     audioRef.value.addEventListener('error', handleError)
+    
+    // Autoplay the first available track
+    if (currentTrack.value && !autoplayAttempted.value) {
+      autoplayAttempted.value = true
+      setTimeout(() => {
+        togglePlay()
+      }, 1000) // Small delay to ensure everything is loaded
+    }
 
     if (currentTrack.value && audioRef.value) {
       audioRef.value.src = currentTrack.value.audioUrl
-      audioRef.value.load()
+        audioRef.value.load()
     }
 
     onBeforeUnmount(() => {

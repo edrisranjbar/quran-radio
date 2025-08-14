@@ -7,7 +7,7 @@ const emit = defineEmits<{
   (e: 'timeout'): void
 }>()
 
-const { t } = useI18n()
+const { t, isRTL } = useI18n()
 
 // Timer state
 const isActive = ref(false)
@@ -110,8 +110,14 @@ defineExpose({
       class="flex items-center gap-2 px-3 py-2 text-sm border border-border rounded-md hover:bg-muted transition-colors"
       @click="$emit('show-modal')"
     >
-      <Clock :size="16" />
-      <span>{{ t.sleepTimer }}</span>
+      <template v-if="!isRTL">
+        <Clock :size="16" />
+        <span>{{ t.sleepTimer }}</span>
+      </template>
+      <template v-else>
+        <span class="font-arabic">{{ t.sleepTimer }}</span>
+        <Clock :size="16" />
+      </template>
     </button>
 
     <!-- Active Timer Display -->
@@ -150,8 +156,8 @@ defineExpose({
           </div>
           
           <!-- Timer Status Text -->
-          <p class="text-xs text-primary/70 mt-1 font-medium">
-            {{ t.sleepTimerActive }} - {{ Math.ceil(remainingTime / 60) }} {{ t.minLeft }}
+          <p class="text-xs text-primary/70 mt-1 font-medium" :class="{ 'font-arabic': isRTL }">
+            {{ Math.ceil(remainingTime / 60) }} {{ t.timerActivated }}
           </p>
         </div>
         
