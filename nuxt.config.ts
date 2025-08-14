@@ -51,8 +51,8 @@ export default defineNuxtConfig({
         { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
         { name: 'apple-mobile-web-app-title', content: 'Quran Radio' },
         { name: 'application-name', content: 'Quran Radio' },
-        { name: 'msapplication-TileColor', content: '#1B4332' },
-        { name: 'theme-color', content: '#1B4332' },
+                       { name: 'msapplication-TileColor', content: '#10B981' },
+               { name: 'theme-color', content: '#10B981' },
         
         // Additional SEO
         { name: 'format-detection', content: 'telephone=no' },
@@ -71,12 +71,17 @@ export default defineNuxtConfig({
         { rel: 'alternate', hreflang: 'ar', href: 'https://online-nour-cast.ir' },
         { rel: 'alternate', hreflang: 'fa', href: 'https://online-nour-cast.ir' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+        // PWA Manifest
+        { rel: 'manifest', href: '/manifest.json' },
+        // iOS PWA Support
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/icons/icon-192x192.png' },
+        { rel: 'apple-touch-startup-image', href: '/icons/icon-512x512.png' }
       ],
       script: [
         {
           type: 'application/ld+json',
-          children: JSON.stringify({
+          innerHTML: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'RadioStation',
             name: 'Quran Radio',

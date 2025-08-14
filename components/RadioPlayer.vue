@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { Loader2, Music2 } from 'lucide-vue-next'
+import { Loader2, Music2, X } from 'lucide-vue-next'
 import { watch, ref } from 'vue'
 import { useAudio } from '@/composables/useAudio'
 import { useI18n } from '@/composables/useI18n'
 import AudioControls from '@/components/AudioControls.vue'
 import ListenerCount from '@/components/ListenerCount.client.vue'
 import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
+import SleepTimer from '@/components/SleepTimer.vue'
 
 const {
   isPlaying,
@@ -24,6 +25,8 @@ const {
 
 const { t, isRTL, currentLanguage } = useI18n()
 const containerRef = ref<HTMLElement>()
+const showSleepTimerModal = ref(false)
+const sleepTimerRef = ref<InstanceType<typeof SleepTimer> | null>(null)
 
 // Update direction when language changes
 watch(isRTL, (newIsRTL) => {
@@ -36,6 +39,22 @@ watch(isRTL, (newIsRTL) => {
     document.documentElement.lang = currentLanguage.value
   }
 }, { immediate: true })
+
+// Handle sleep timer timeout
+const handleSleepTimeout = () => {
+  if (isPlaying.value) {
+    // Fade out audio over 3 seconds
+    const fadeOutInterval = setInterval(() => {
+      if (volume.value > 0.1) {
+        changeVolume(volume.value - 0.1)
+      } else {
+        clearInterval(fadeOutInterval)
+        togglePlay() // Stop playback
+        changeVolume(0.7) // Reset volume for next time
+      }
+    }, 300)
+  }
+}
 </script>
 
 <template>
@@ -55,7 +74,7 @@ watch(isRTL, (newIsRTL) => {
         <!-- Main Player (Mobile) -->
         <main class="p-6">
           <div class="text-center mb-6">
-            <h2 class="text-2xl font-display font-bold text-primary mb-2" :class="{ 'font-arabic': isRTL }">Listen To Quran</h2>
+            <h2 class="text-2xl font-display font-bold text-primary mb-2" :class="{ 'font-arabic': isRTL }">{{ t.title }}</h2>
             <p class="text-base text-muted-foreground">
               {{ currentTrack ? `${t.nowPlaying}: ${currentTrack.title}` : t.selectStation }}
             </p>
@@ -69,8 +88,14 @@ watch(isRTL, (newIsRTL) => {
             @volume="changeVolume"
           />
 
-          <div class="flex justify-center mt-4">
+          <div class="flex flex-col items-center gap-3 mt-4">
             <ListenerCount />
+            <SleepTimer 
+              ref="sleepTimerRef"
+              @timeout="handleSleepTimeout"
+              @show-modal="showSleepTimerModal = true"
+              @hide-modal="showSleepTimerModal = false"
+            />
           </div>
         </main>
 
@@ -158,10 +183,56 @@ watch(isRTL, (newIsRTL) => {
             @next="next"
           />
 
-          <div class="flex justify-center mt-4">
+          <div class="flex flex-col items-center gap-3 mt-4">
             <ListenerCount />
+            <SleepTimer 
+              ref="sleepTimerRef"
+              @timeout="handleSleepTimeout"
+              @show-modal="showSleepTimerModal = true"
+              @hide-modal="showSleepTimerModal = false"
+            />
           </div>
         </main>
+      </div>
+    </div>
+
+    <!-- Sleep Timer Modal -->
+    <div
+      v-if="showSleepTimerModal"
+      class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+      @click.self="showSleepTimerModal = false"
+    >
+      <div class="bg-background border border-border rounded-lg p-6 max-w-sm w-full mx-4">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold" :class="{ 'font-arabic': isRTL }">{{ t.sleepTimer }}</h3>
+          <button
+            @click="showSleepTimerModal = false"
+            class="text-muted-foreground hover:text-foreground"
+          >
+            <X :size="20" />
+          </button>
+        </div>
+        
+        <p class="text-sm text-muted-foreground mb-4" :class="{ 'font-arabic': isRTL }">
+          {{ t.sleepTimerDescription }}
+        </p>
+
+        <div class="grid grid-cols-2 gap-3">
+          <button
+            v-for="preset in [
+              { label: t.timerDurations['15min'], value: 15 },
+              { label: t.timerDurations['30min'], value: 30 },
+              { label: t.timerDurations['1hour'], value: 60 },
+              { label: t.timerDurations['2hours'], value: 120 }
+            ]"
+            :key="preset.value"
+            @click="sleepTimerRef?.startTimer(preset.value); showSleepTimerModal = false"
+            class="p-3 border border-border rounded-md hover:bg-muted transition-colors text-center"
+            :class="{ 'font-arabic': isRTL }"
+          >
+            {{ preset.label }}
+          </button>
+        </div>
       </div>
     </div>
   </div>
