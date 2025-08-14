@@ -1,14 +1,22 @@
-Quran Radio – Tahqiq & Tartil
-================================
+# Quran Radio – Tahqiq & Tartil  
+> *A beautiful way to listen to the Qur’an online, anywhere, anytime.*
 
-Elegant, mobile‑first Quran radio built with Nuxt 4 + Tailwind CSS.
+<img width="3004" height="1715" alt="Quran Radio Screenshot" src="https://github.com/user-attachments/assets/8156a479-ef47-45d7-9d73-858818711714" />
 
-Features
---------
-- Two stations: Tahqiq (slow, precise) and Tartil (measured, melodious)
-- Modern, dark UI with Islamic accents
-- Realtime listener count via Socket.IO
-- SEO‑optimized meta tags for “Quran Radio” and “Online Quran Radio”
+**Quran Radio** is an elegant, mobile-first web application for streaming Qur’anic recitations in two classic styles — *Tahqiq* (slow and precise) and *Tartil* (measured and melodious). Built with **Nuxt 4** and **Tailwind CSS**, it offers a smooth, modern experience while staying rooted in a timeless tradition.
+
+---
+
+## ✨ Features
+- 🎙 **Two Live Stations** –  
+  - **Tahqiq**: slow-paced, clear pronunciation for study and reflection.  
+  - **Tartil**: flowing and melodious recitation for immersive listening.  
+- 🌙 **Modern Dark UI** with subtle Islamic design accents.  
+- 📡 **Realtime Listener Count** powered by **Socket.IO**.  
+- 🔍 **SEO-Optimized** meta tags for phrases like “Quran Radio” and “Online Quran Radio”.  
+- 📱 **Mobile-First Design** – perfect on any device.  
+
+---
 
 Getting Started
 ---------------
