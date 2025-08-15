@@ -35,6 +35,7 @@ export function useI18n() {
       timerActivated: 'minutes timer activated',
       github: 'GitHub',
       contact: 'Contact',
+      donate: 'Donate',
       listeningNow: 'listening now',
       timerDurations: {
         '15min': '15 min',
@@ -77,6 +78,7 @@ export function useI18n() {
       timerActivated: 'دقيقة تم تفعيل المؤقت',
       github: 'جيت هاب',
       contact: 'اتصل بنا',
+      donate: 'تبرع',
       listeningNow: 'يستمعون الآن',
       timerDurations: {
         '15min': '15 دقيقة',
@@ -119,6 +121,7 @@ export function useI18n() {
       timerActivated: 'دقیقه تایمر فعال شد',
       github: 'گیت‌هاب',
       contact: 'تماس',
+      donate: 'حمایت مالی',
       listeningNow: 'در حال گوش دادن',
       timerDurations: {
         '15min': '15 دقیقه',

@@ -24,6 +24,15 @@ const { t } = useI18n()
           </a>
           <span>•</span>
           <a 
+            href="https://edrisranjbar.ir/donation" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="hover:text-primary transition-colors"
+          >
+            {{ t.donate }}
+          </a>
+          <span>•</span>
+          <a 
             href="mailto:edrisranjbar.dev@gmail.com"
             class="hover:text-primary transition-colors"
           >
