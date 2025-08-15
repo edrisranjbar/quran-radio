@@ -83,6 +83,8 @@ const handleSleepTimeout = () => {
             :volume="volume"
             @toggle="togglePlay"
             @volume="changeVolume"
+            @previous="previous()"
+            @next="next()"
           />
 
           <div class="flex flex-col items-center gap-3 mt-4">

@@ -69,14 +69,7 @@ export function useAudio() {
 
     const handleEnded = () => {
       // Auto-advance to next track and keep playing
-      next()
-      if (audioRef.value && currentTrack.value) {
-        audioRef.value.src = currentTrack.value.audioUrl
-        audioRef.value.load()
-        audioRef.value.play().catch(() => {
-      isPlaying.value = false
-        })
-      }
+      next(true)
     }
     const handleError = (e: Event) => {
       console.error('Audio error:', e)
@@ -118,34 +111,48 @@ export function useAudio() {
     if (first) await changeTrack(first)
   }
 
-  const changeTrack = async (track: AudioTrack) => {
-    if (isPlaying.value && audioRef.value) {
-      audioRef.value.pause()
-      isPlaying.value = false
+  const changeTrack = async (track: AudioTrack, autoplay: boolean = false) => {
+    if (audioRef.value) {
+      if (isPlaying.value) {
+        audioRef.value.pause()
+      }
     }
+    isPlaying.value = false
     currentTrack.value = track
     if (audioRef.value) {
       audioRef.value.src = track.audioUrl
       audioRef.value.load()
+      if (autoplay) {
+        loading.value = true
+        try {
+          await audioRef.value.play()
+          isPlaying.value = true
+        } catch (error) {
+          console.error('Error autoplaying audio:', error)
+          isPlaying.value = false
+        } finally {
+          loading.value = false
+        }
+      }
     }
   }
 
-  const next = () => {
+  const next = (autoplay: boolean = true) => {
     if (!currentTrack.value) return
     const tracks = stationTracks.value
     const currentIndex = tracks.findIndex(t => t.id === currentTrack.value?.id)
     const nextIndex = currentIndex < tracks.length - 1 ? currentIndex + 1 : 0
     const nextTrack = tracks[nextIndex]
-    if (nextTrack) changeTrack(nextTrack)
+    if (nextTrack) changeTrack(nextTrack, autoplay)
   }
 
-  const previous = () => {
+  const previous = (autoplay: boolean = true) => {
     if (!currentTrack.value) return
     const tracks = stationTracks.value
     const currentIndex = tracks.findIndex(t => t.id === currentTrack.value?.id)
     const prevIndex = currentIndex > 0 ? currentIndex - 1 : tracks.length - 1
     const prevTrack = tracks[prevIndex]
-    if (prevTrack) changeTrack(prevTrack)
+    if (prevTrack) changeTrack(prevTrack, autoplay)
   }
 
   const togglePlay = async () => {
