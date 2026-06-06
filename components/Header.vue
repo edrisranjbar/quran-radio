@@ -1,32 +1,33 @@
 <script setup lang="ts">
 import { useI18n } from '@/composables/useI18n'
 
-defineProps<{
-  title: string
-  description: string
-}>()
+defineProps<{ title: string; description: string }>()
 
 const { isRTL } = useI18n()
 </script>
 
 <template>
-  <header class="text-center mb-8 mt-6">
-    <div class="flex items-center justify-center mb-4" :class="{ 'flex-row-reverse': isRTL }">
-      <img 
-        src="/quran-icon.svg" 
-        alt="Quran Radio Logo" 
-        class="h-8 w-8 md:h-10 md:w-10 pulse"
-        :class="isRTL ? 'ml-3' : 'mr-3'"
-      />
-      <h1 class="text-2xl md:text-4xl font-display font-bold text-gradient" :class="{ 'font-arabic': isRTL }">
-        {{ title }}
-      </h1>
+  <header class="text-center mb-10 mt-8 animate-fade-in relative">
+    <!-- Status pill -->
+    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass mono text-[10px] tracking-[0.2em] uppercase text-muted-foreground mb-6">
+      <span class="relative flex h-2 w-2">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+      </span>
+      <span>Live · On-Chain Listening</span>
     </div>
-    <p class="text-gray-400 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-4" :class="{ 'font-arabic': isRTL }">
+
+    <h1
+      class="text-5xl md:text-7xl font-bold tracking-tight mb-4 text-gradient"
+      :class="{ 'font-arabic': isRTL }"
+    >
+      {{ title }}
+    </h1>
+    <p
+      class="text-base md:text-lg max-w-2xl mx-auto leading-relaxed text-muted-foreground"
+      :class="{ 'font-arabic': isRTL }"
+    >
       {{ description }}
     </p>
   </header>
-  
 </template>
-
-
