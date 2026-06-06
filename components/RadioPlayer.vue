@@ -1,26 +1,16 @@
 <script setup lang="ts">
-import { Loader2, Music2, X } from 'lucide-vue-next'
+import { Loader2, Radio, X, Sparkles } from 'lucide-vue-next'
 import { watch, ref } from 'vue'
 import { useAudio } from '@/composables/useAudio'
 import { useI18n } from '@/composables/useI18n'
 import AudioControls from '@/components/AudioControls.vue'
+import AudioWave from '@/components/AudioWave.vue'
 import ListenerCount from '@/components/ListenerCount.client.vue'
-import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 import SleepTimer from '@/components/SleepTimer.vue'
 
 const {
-  isPlaying,
-  volume,
-  loading,
-  togglePlay,
-  changeVolume,
-  isLoading,
-  currentStation,
-  currentTrack,
-  stations,
-  selectStation,
-  next,
-  previous
+  isPlaying, volume, loading, togglePlay, changeVolume, isLoading,
+  currentStation, stations, selectStation, next, previous
 } = useAudio()
 
 const { t, isRTL, currentLanguage } = useI18n()
@@ -28,55 +18,64 @@ const containerRef = ref<HTMLElement>()
 const showSleepTimerModal = ref(false)
 const sleepTimerRef = ref<InstanceType<typeof SleepTimer> | null>(null)
 
-// Update direction when language changes
 watch(isRTL, (newIsRTL) => {
-  if (containerRef.value) {
-    containerRef.value.dir = newIsRTL ? 'rtl' : 'ltr'
-  }
-  // Also update document direction for full RTL support
+  if (containerRef.value) containerRef.value.dir = newIsRTL ? 'rtl' : 'ltr'
   if (process.client) {
     document.documentElement.dir = newIsRTL ? 'rtl' : 'ltr'
     document.documentElement.lang = currentLanguage.value
   }
 }, { immediate: true })
 
-// Handle sleep timer timeout
 const handleSleepTimeout = () => {
   if (isPlaying.value) {
-    // Fade out audio over 3 seconds
     const fadeOutInterval = setInterval(() => {
-      if (volume.value > 0.1) {
-        changeVolume(volume.value - 0.1)
-      } else {
-        clearInterval(fadeOutInterval)
-        togglePlay() // Stop playback
-        changeVolume(0.7) // Reset volume for next time
-      }
+      if (volume.value > 0.1) changeVolume(volume.value - 0.1)
+      else { clearInterval(fadeOutInterval); togglePlay(); changeVolume(0.7) }
     }, 300)
   }
 }
 </script>
 
 <template>
-  <div ref="containerRef" class="container mx-auto px-4 max-w-6xl" dir="ltr">
-    <!-- Language Switcher at Top -->
-    <!-- <div class="flex justify-end mb-4">
-      <LanguageSwitcher />
-    </div> -->
-    
-    <div v-if="isLoading" class="islamic-card flex flex-col items-center justify-center p-10">
+  <div ref="containerRef" class="container mx-auto px-4 max-w-6xl animate-fade-in" dir="ltr">
+    <div v-if="isLoading" class="glass-card flex flex-col items-center justify-center p-16">
       <Loader2 class="h-10 w-10 animate-spin text-primary" />
-      <p class="mt-4 text-foreground">Preparing stations...</p>
+      <p class="mt-4 text-muted-foreground mono text-xs tracking-widest uppercase">Preparing Streams…</p>
     </div>
-    <div v-else class="islamic-card p-0 overflow-hidden">
-      <!-- Mobile Layout: Player First, Stations Below -->
-      <div class="block md:hidden">
-        <!-- Main Player (Mobile) -->
-        <main class="p-6">
-          <div class="text-center mb-6">
-            <h2 class="text-2xl font-display font-bold text-primary mb-2" :class="{ 'font-arabic': isRTL }">{{ t.streaming }}</h2>
+
+    <div v-else class="grid gap-5 md:grid-cols-[1fr_320px]">
+      <!-- Main Player -->
+      <section class="glass-card aurora-bg p-8 md:p-10 relative">
+        <div class="relative z-10">
+          <!-- Header row -->
+          <div class="flex items-center justify-between mb-8">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/30 mono text-[10px] tracking-[0.2em] uppercase text-primary">
+              <Radio :size="12" />
+              <span>{{ isPlaying ? 'Broadcasting' : 'Standby' }}</span>
+            </div>
+            <ListenerCount />
           </div>
 
+          <!-- Now playing -->
+          <div class="text-center mb-8">
+            <p class="mono text-[10px] tracking-[0.3em] uppercase text-muted-foreground mb-3">{{ t.nowPlaying }}</p>
+            <h2
+              class="text-3xl md:text-5xl font-bold tracking-tight mb-2"
+              :class="{ 'font-arabic': isRTL, 'text-gradient': isPlaying, 'text-foreground': !isPlaying }"
+            >
+              {{ currentStation ? t[currentStation.key].name : t.selectStation }}
+            </h2>
+            <p v-if="currentStation" class="text-sm text-muted-foreground" :class="{ 'font-arabic': isRTL }">
+              {{ t[currentStation.key].description }}
+            </p>
+          </div>
+
+          <!-- Wave -->
+          <div class="mb-8">
+            <AudioWave :active="isPlaying" />
+          </div>
+
+          <!-- Controls -->
           <AudioControls
             :is-playing="isPlaying"
             :loading="loading"
@@ -87,209 +86,79 @@ const handleSleepTimeout = () => {
             @next="next()"
           />
 
-          <div class="flex flex-col items-center gap-3 mt-4">
-            <ListenerCount />
-            <SleepTimer 
+          <!-- Sleep timer -->
+          <div class="mt-8 flex items-center justify-center">
+            <SleepTimer
               ref="sleepTimerRef"
               @timeout="handleSleepTimeout"
               @show-modal="showSleepTimerModal = true"
               @hide-modal="showSleepTimerModal = false"
             />
           </div>
-        </main>
+        </div>
+      </section>
 
-        <!-- Stations (Mobile) -->
-        <section class="border-t border-border bg-gradient-to-b from-background to-muted/20">
-          <div class="p-4">
-            <p class="text-xs uppercase tracking-wider text-muted-foreground mb-3">{{ t.stations }}</p>
-            <div class="grid grid-cols-1 gap-3">
-              <button
-                v-for="s in stations"
-                :key="s.key"
-                class="w-full rounded-lg p-3 transition-all card-hover"
-                :class="{ 
-                  'border-primary/50 bg-primary/5 ring-1 ring-primary/20': currentStation?.key === s.key,
-                  'opacity-50 cursor-not-allowed grayscale': !s.enabled,
-                  'text-right': isRTL,
-                  'text-left': !isRTL
-                }"
-                @click="selectStation(s.key)"
-                :disabled="!s.enabled"
+      <!-- Stations Sidebar -->
+      <aside class="glass-card p-5">
+        <div class="flex items-center justify-between mb-4 px-1">
+          <p class="mono text-[10px] tracking-[0.25em] uppercase text-muted-foreground">{{ t.stations }}</p>
+          <Sparkles :size="14" class="text-primary/60" />
+        </div>
+        <div class="space-y-3">
+          <button
+            v-for="s in stations"
+            :key="s.key"
+            class="station-chip w-full text-left group"
+            :class="{
+              'active': currentStation?.key === s.key,
+              'opacity-40 cursor-not-allowed': !s.enabled,
+              'text-right': isRTL
+            }"
+            @click="selectStation(s.key)"
+            :disabled="!s.enabled"
+          >
+            <div class="relative z-10 flex items-center gap-3" :class="{ 'flex-row-reverse': isRTL }">
+              <div
+                class="h-11 w-11 grid place-items-center rounded-xl shrink-0 transition-all"
+                :class="currentStation?.key === s.key
+                  ? 'bg-gradient-to-br from-primary to-secondary text-primary-foreground'
+                  : 'bg-muted/50 text-foreground/70 group-hover:bg-primary/20 group-hover:text-primary'"
               >
-                <div class="flex items-center gap-3">
-                  <template v-if="!isRTL">
-                    <div class="h-10 w-10 grid place-items-center rounded-lg bg-primary/10 text-primary">
-                      <Music2 :size="18" />
-                    </div>
-                    <div class="text-left">
-                      <p class="text-sm font-medium">{{ t[s.key].name }}</p>
-                      <p class="text-xs text-muted-foreground mt-1">{{ t[s.key].description }}</p>
-                      <p v-if="!s.enabled" class="text-xs text-primary/60 mt-1">{{ t.comingSoon }}</p>
-                    </div>
-                  </template>
-                  <template v-else>
-                    <div class="text-right">
-                      <p class="text-sm font-medium font-arabic">{{ t[s.key].name }}</p>
-                      <p class="text-xs text-muted-foreground mt-1 font-arabic">{{ t[s.key].description }}</p>
-                      <p v-if="!s.enabled" class="text-xs text-primary/60 mt-1 font-arabic">{{ t.comingSoon }}</p>
-                    </div>
-                    <div class="h-10 w-10 grid place-items-center rounded-lg bg-primary/10 text-primary">
-                      <Music2 :size="18" />
-                    </div>
-                  </template>
-                </div>
-              </button>
-            </div>
-          </div>
-        </section>
-      </div>
-
-      <!-- Desktop Layout: Sidebar + Player -->
-      <div class="hidden md:grid gap-0" :class="isRTL ? 'md:grid-cols-[1fr_260px]' : 'md:grid-cols-[260px_1fr]'">
-        <template v-if="!isRTL">
-          <!-- LTR: Sidebar first, then Player -->
-          <!-- Sidebar: Stations (Desktop) -->
-          <aside class="border-r border-border bg-gradient-to-b from-background to-muted/20">
-            <div class="p-4">
-              <p class="text-xs uppercase tracking-wider text-muted-foreground mb-3">{{ t.stations }}</p>
-              <div class="space-y-3">
-                <button
-                  v-for="s in stations"
-                  :key="s.key"
-                  class="w-full rounded-lg p-4 transition-all card-hover text-left"
-                  :class="{ 
-                    'border-primary/50 bg-primary/5 ring-1 ring-primary/20': currentStation?.key === s.key,
-                    'opacity-50 cursor-not-allowed grayscale': !s.enabled
-                  }"
-                  @click="selectStation(s.key)"
-                  :disabled="!s.enabled"
-                >
-                  <div class="flex items-center gap-4">
-                    <div class="h-12 w-12 grid place-items-center rounded-lg bg-primary/10 text-primary">
-                      <Music2 :size="20" />
-                    </div>
-                    <div class="text-left">
-                      <p class="text-base font-medium">{{ t[s.key].name }}</p>
-                      <p class="text-xs text-muted-foreground mt-1">{{ t[s.key].description }}</p>
-                      <p v-if="!s.enabled" class="text-xs text-primary/60 mt-1">{{ t.comingSoon }}</p>
-                    </div>
-                  </div>
-                </button>
+                <Radio :size="18" />
+              </div>
+              <div class="min-w-0 flex-1">
+                <p class="text-sm font-semibold truncate" :class="{ 'font-arabic': isRTL }">{{ t[s.key].name }}</p>
+                <p class="text-[11px] text-muted-foreground mt-0.5 line-clamp-1" :class="{ 'font-arabic': isRTL }">
+                  {{ s.enabled ? t[s.key].description : t.comingSoon }}
+                </p>
+              </div>
+              <div v-if="currentStation?.key === s.key && isPlaying" class="flex items-end gap-[2px] h-4">
+                <span class="w-[2px] bg-primary animate-wave" style="animation-delay: 0s; height: 100%;" />
+                <span class="w-[2px] bg-primary animate-wave" style="animation-delay: 0.2s; height: 60%;" />
+                <span class="w-[2px] bg-primary animate-wave" style="animation-delay: 0.4s; height: 80%;" />
               </div>
             </div>
-          </aside>
-
-          <!-- Main Player (Desktop) -->
-          <main class="p-8">
-            <div class="text-center mb-8">
-              <h2 class="text-4xl font-display font-bold text-primary mb-4">{{ t.streaming }}</h2>
-            </div>
-
-            <AudioControls
-              :is-playing="isPlaying"
-              :loading="loading"
-              :volume="volume"
-              @toggle="togglePlay"
-              @volume="changeVolume"
-              @previous="previous"
-              @next="next"
-            />
-
-            <div class="flex flex-col items-center gap-3 mt-4">
-              <ListenerCount />
-              <SleepTimer 
-                ref="sleepTimerRef"
-                @timeout="handleSleepTimeout"
-                @show-modal="showSleepTimerModal = true"
-                @hide-modal="showSleepTimerModal = false"
-              />
-            </div>
-          </main>
-        </template>
-        <template v-else>
-          <!-- RTL: Player first, then Sidebar -->
-          <!-- Main Player (Desktop) -->
-          <main class="p-8">
-            <div class="text-center mb-8">
-              <h2 class="text-4xl font-bold text-primary mb-4 font-arabic">{{ t.streaming }}</h2>
-            </div>
-
-            <AudioControls
-              :is-playing="isPlaying"
-              :loading="loading"
-              :volume="volume"
-              @toggle="togglePlay"
-              @volume="changeVolume"
-              @previous="previous"
-              @next="next"
-            />
-
-            <div class="flex flex-col items-center gap-3 mt-4">
-              <ListenerCount />
-              <SleepTimer 
-                ref="sleepTimerRef"
-                @timeout="handleSleepTimeout"
-                @show-modal="showSleepTimerModal = true"
-                @hide-modal="showSleepTimerModal = false"
-              />
-            </div>
-          </main>
-
-          <!-- Sidebar: Stations (Desktop) -->
-          <aside class="border-l border-border bg-gradient-to-b from-background to-muted/20">
-            <div class="p-4">
-              <p class="text-xs uppercase tracking-wider text-muted-foreground mb-3 font-arabic">{{ t.stations }}</p>
-              <div class="space-y-3">
-                <button
-                  v-for="s in stations"
-                  :key="s.key"
-                  class="w-full rounded-lg p-4 transition-all card-hover text-right"
-                  :class="{ 
-                    'border-primary/50 bg-primary/5 ring-1 ring-primary/20': currentStation?.key === s.key,
-                    'opacity-50 cursor-not-allowed grayscale': !s.enabled
-                  }"
-                  @click="selectStation(s.key)"
-                  :disabled="!s.enabled"
-                >
-                  <div class="flex items-center gap-4">
-                    <div class="text-right">
-                      <p class="text-base font-medium font-arabic">{{ t[s.key].name }}</p>
-                      <p class="text-xs text-muted-foreground mt-1 font-arabic">{{ t[s.key].description }}</p>
-                      <p v-if="!s.enabled" class="text-xs text-primary/60 mt-1 font-arabic">{{ t.comingSoon }}</p>
-                    </div>
-                    <div class="h-12 w-12 grid place-items-center rounded-lg bg-primary/10 text-primary">
-                      <Music2 :size="20" />
-                    </div>
-                  </div>
-                </button>
-              </div>
-            </div>
-          </aside>
-        </template>
-      </div>
+          </button>
+        </div>
+      </aside>
     </div>
 
     <!-- Sleep Timer Modal -->
     <div
       v-if="showSleepTimerModal"
-      class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+      class="fixed inset-0 bg-background/80 backdrop-blur-md flex items-center justify-center z-50 animate-fade-in"
       @click.self="showSleepTimerModal = false"
     >
-      <div class="bg-background border border-border rounded-lg p-6 max-w-sm w-full mx-4">
+      <div class="glass-card p-6 max-w-sm w-full mx-4">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-semibold" :class="{ 'font-arabic': isRTL }">{{ t.sleepTimer }}</h3>
-          <button
-            @click="showSleepTimerModal = false"
-            class="text-muted-foreground hover:text-foreground"
-          >
+          <button @click="showSleepTimerModal = false" class="text-muted-foreground hover:text-foreground transition-colors">
             <X :size="20" />
           </button>
         </div>
-        
-        <p class="text-sm text-muted-foreground mb-4" :class="{ 'font-arabic': isRTL }">
+        <p class="text-sm text-muted-foreground mb-5" :class="{ 'font-arabic': isRTL }">
           {{ t.sleepTimerDescription }}
         </p>
-
         <div class="grid grid-cols-2 gap-3">
           <button
             v-for="preset in [
@@ -300,7 +169,7 @@ const handleSleepTimeout = () => {
             ]"
             :key="preset.value"
             @click="sleepTimerRef?.startTimer(preset.value); showSleepTimerModal = false"
-            class="p-3 border border-border rounded-md hover:bg-muted transition-colors text-center"
+            class="p-3 glass rounded-xl hover:border-primary/40 hover:bg-primary/10 transition-all text-center text-sm font-medium"
             :class="{ 'font-arabic': isRTL }"
           >
             {{ preset.label }}
@@ -310,5 +179,3 @@ const handleSleepTimeout = () => {
     </div>
   </div>
 </template>
-
-

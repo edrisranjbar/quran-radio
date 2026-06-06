@@ -1,18 +1,19 @@
 <script setup lang="ts">
-const bars = Array.from({ length: 16 }, (_, i) => ({
-  animationDelay: `${i * 0.1}s`
+defineProps<{ active?: boolean }>()
+const bars = Array.from({ length: 32 }, (_, i) => ({
+  delay: `${(i % 8) * 0.08}s`,
+  height: `${20 + ((i * 17) % 60)}%`
 }))
 </script>
 
 <template>
-  <div class="flex items-center justify-center gap-1 h-16">
+  <div class="flex items-center justify-center gap-[3px] h-16 w-full">
     <div
-      v-for="(bar, index) in bars"
-      :key="index"
-      class="w-1 bg-emerald-500/70 rounded-full animate-wave"
-      :style="{ animationDelay: bar.animationDelay, height: `${Math.max(15, Math.floor(Math.random() * 40))}px` }"
+      v-for="(bar, i) in bars"
+      :key="i"
+      class="w-[3px] rounded-full bg-gradient-to-t from-primary via-accent to-secondary"
+      :class="active ? 'animate-wave' : 'opacity-30'"
+      :style="{ animationDelay: bar.delay, height: bar.height }"
     />
   </div>
 </template>
-
-

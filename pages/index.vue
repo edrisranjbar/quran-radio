@@ -6,8 +6,8 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <div class="min-h-dvh islamic-pattern">
-    <div class="max-w-4xl mx-auto py-4 px-4">
+  <div class="min-h-dvh relative">
+    <div class="max-w-6xl mx-auto py-6 px-4 relative z-10">
       <Header :title="t.title" :description="t.description" />
       <RadioPlayer />
       <PWAInstall />
