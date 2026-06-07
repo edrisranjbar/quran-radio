@@ -48,13 +48,10 @@ const handleSleepTimeout = () => {
       <section class="glass-card aurora-bg p-8 md:p-10 relative">
         <div class="relative z-10">
           <!-- Header row -->
-          <div class="flex items-center justify-between mb-8">
-            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/30 mono text-[10px] tracking-[0.2em] uppercase text-primary">
-              <Radio :size="12" />
-              <span>{{ isPlaying ? 'Broadcasting' : 'Standby' }}</span>
-            </div>
+          <div class="flex items-center justify-end mb-8">
             <ListenerCount />
           </div>
+
 
           <!-- Now playing -->
           <div class="text-center mb-8">
